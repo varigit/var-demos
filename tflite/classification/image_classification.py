@@ -1,36 +1,47 @@
 # Copyright 2021 Variscite LTD
 # SPDX-License-Identifier: BSD-3-Clause
 
-from time import time
-
 import numpy as np
 from PIL import Image
 from tflite_runtime.interpreter import Interpreter
 
-with open("labels_mobilenet_quant_v1_224.txt") as f:
-    labels = f.read().splitlines()
+from utils import Timer, arguments
 
-interpreter = Interpreter(model_path="mobilenet_v1_1.0_224_quant.tflite")
-interpreter.allocate_tensors()
-input_details = interpreter.get_input_details()
-output_details = interpreter.get_output_details()
+def image_classification(model_name, label_name, image_name, k = 3):
 
-with Image.open("image.jpg") as im:
-    _, height, width, _ = input_details[0]['shape']
-    image = im.resize((width, height))
-    image = np.expand_dims(image, axis=0)
+    with open(label_name) as f:
+        labels = f.read().splitlines()
 
-interpreter.set_tensor(input_details[0]['index'], image)
-interpreter.invoke()
-start = time()
-interpreter.invoke()
-final = time()
+    interpreter = Interpreter(model_path=model_name)
+    interpreter.allocate_tensors()
+    input_details = interpreter.get_input_details()
+    output_details = interpreter.get_output_details()
 
-output_details = interpreter.get_output_details()[0]
-output = np.squeeze(interpreter.get_tensor(output_details['index']))
-results = output.argsort()[-3:][::-1]
-for i in results:
-    score = float(output[i] / 255.0)
-    print("[{:.2%}]: {}".format(score, labels[i]))
+    with Image.open(image_name) as im:
+        _, height, width, _ = input_details[0]['shape']
+        image = im.resize((width, height))
+        image = np.expand_dims(image, axis = 0)
 
-print("INFERENCE TIME: {:.6f} seconds".format(final-start))
+    interpreter.set_tensor(input_details[0]['index'], image)
+
+    timer = Timer()
+    with timer.timeit():
+        interpreter.invoke()
+    warm_up_time = timer.time
+
+    with timer.timeit():
+        interpreter.invoke()
+
+    output_details = interpreter.get_output_details()[0]
+    output = np.squeeze(interpreter.get_tensor(output_details['index']))
+    results = output.argsort()[-3:][::-1]
+    for i in results:
+        score = float(output[i] / 255.0)
+        print("[{:.2%}]: {}".format(score, labels[i]))
+
+    print("WARM-UP TIME:   {} seconds".format(warm_up_time))
+    print("INFERENCE TIME: {} seconds".format(timer.time))
+
+if __name__ == "__main__":
+    args = arguments()
+    image_classification(args.model, args.label, args.image)
