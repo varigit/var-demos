@@ -34,7 +34,7 @@ def image_classification(model_name, label_name, image_name, k = 3):
 
     output_details = interpreter.get_output_details()[0]
     output = np.squeeze(interpreter.get_tensor(output_details['index']))
-    results = output.argsort()[-3:][::-1]
+    results = output.argsort()[-k:][::-1]
     for i in results:
         score = float(output[i] / 255.0)
         print("[{:.2%}]: {}".format(score, labels[i]))
