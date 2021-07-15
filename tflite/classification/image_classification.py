@@ -1,23 +1,23 @@
 # Copyright 2021 Variscite LTD
 # SPDX-License-Identifier: BSD-3-Clause
+import argparse
 
 import numpy as np
 from PIL import Image
 from tflite_runtime.interpreter import Interpreter
 
-from utils import Timer, arguments
+from utils import Timer
 
-def image_classification(model_name, label_name, image_name, k = 3):
-
-    with open(label_name) as f:
+def image_classification(args, k = 3):
+    with open(args['label']) as f:
         labels = f.read().splitlines()
 
-    interpreter = Interpreter(model_path=model_name)
+    interpreter = Interpreter(model_path=args['model'])
     interpreter.allocate_tensors()
     input_details = interpreter.get_input_details()
     output_details = interpreter.get_output_details()
 
-    with Image.open(image_name) as im:
+    with Image.open(args['image']) as im:
         _, height, width, _ = input_details[0]['shape']
         image = im.resize((width, height))
         image = np.expand_dims(image, axis = 0)
@@ -43,5 +43,18 @@ def image_classification(model_name, label_name, image_name, k = 3):
     print("INFERENCE TIME: {} seconds".format(timer.time))
 
 if __name__ == "__main__":
-    args = arguments()
-    image_classification(args.model, args.label, args.image)
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+          '--model',
+          default='mobilenet_v1_1.0_224_quant.tflite',
+          help='.tflite model to be executed')
+    parser.add_argument(
+          '--label',
+          default='labels_mobilenet_quant_v1_224.txt',
+          help='name of file containing labels')
+    parser.add_argument(
+          '--image',
+          default='image.jpg',
+          help='image to be classified')
+    args = vars(parser.parse_args())
+    image_classification(args)
