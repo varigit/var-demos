@@ -1,14 +1,15 @@
 # Copyright 2021 Variscite LTD
 # SPDX-License-Identifier: BSD-3-Clause
 import argparse
-import sys
 
 import cv2
 import numpy as np
 from PIL import Image
 from tflite_runtime.interpreter import Interpreter
 
-from config import INF_TIME_MSG, TITLE, FONT
+from config import TITLE
+from utils import load_labels
+from utils import put_info_on_frame
 from utils import Timer
 
 def open_video_capture(args):
@@ -23,29 +24,7 @@ def open_video_capture(args):
         raise SystemExit("videofmw: invalid value. Use 'opencv' or 'gstreamer'")
     return cv2.VideoCapture(pipeline)
 
-def load_labels(args):
-    with open(args['label'], 'r') as f:
-        return [line.strip() for line in f.readlines()]
-
-def display_results(frame, top_result, labels, inference_time):
-    for idx, (i, score) in enumerate (top_result):
-        labels_position = (3, 35 * idx + 60)
-        inference_position = (3, 20)
-        cv2.putText(frame, '{} - {:0.4f}'.format(labels[i], score),
-                    labels_position, FONT['hershey'], FONT['size'],
-                    FONT['color']['black'], FONT['thickness'] + 2)
-        cv2.putText(frame, '{} - {:0.4f}'.format(labels[i], score),
-                    labels_position, FONT['hershey'], FONT['size'],
-                    FONT['color']['blue'], FONT['thickness'])
-        cv2.putText(frame, "{}: {}".format(INF_TIME_MSG, inference_time),
-                    inference_position, FONT['hershey'], 0.5,
-                    FONT['color']['black'], 2, cv2.LINE_AA)
-        cv2.putText(frame, "{}: {}".format(INF_TIME_MSG, inference_time),
-                    inference_position, FONT['hershey'], 0.5,
-                    FONT['color']['white'], 1, cv2.LINE_AA)
-    return frame
-
-def image_classification(args):
+def video_classification(args):
     labels = load_labels(args)
 
     interpreter = Interpreter(model_path=args['model'])
@@ -79,7 +58,7 @@ def image_classification(args):
             score = float(output[i] / 255.0)
             result.append((i, score))
 
-        frame = display_results(frame, result, labels, timer.time)
+        frame = put_info_on_frame(frame, result, labels, timer.time, args)
         cv2.imshow(TITLE, frame)
         cv2.waitKey(1)
 
@@ -99,14 +78,14 @@ if __name__ == "__main__":
     parser.add_argument(
           '--video',
           default='video.mp4',
-          help='video to be classified')
+          help='video file to be classified')
     parser.add_argument(
           '--videofmw',
           default='opencv',
-          help='gstreamer or opencv (default)')
+          help='opencv or gstreamer')
     parser.add_argument(
           '--kresults',
           default='3',
           help='number of displayed results')
     args = vars(parser.parse_args())
-    image_classification(args)
+    video_classification(args)
