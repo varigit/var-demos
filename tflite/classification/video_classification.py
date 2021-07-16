@@ -8,6 +8,7 @@ import numpy as np
 from PIL import Image
 from tflite_runtime.interpreter import Interpreter
 
+from config import INF_TIME_MSG, TITLE, FONT
 from utils import Timer
 
 def open_video_capture(args):
@@ -19,15 +20,32 @@ def open_video_capture(args):
                    "queue ! imxvideoconvert_g2d ! " \
                    "videoconvert ! appsink".format(args['video'])
     else:
-        print("Invalid argument!")
-        sys.exit(0)
+        raise SystemExit("videofmw: invalid value. Use 'opencv' or 'gstreamer'")
     return cv2.VideoCapture(pipeline)
 
 def load_labels(args):
     with open(args['label'], 'r') as f:
         return [line.strip() for line in f.readlines()]
 
-def image_classification(args, k = 3):
+def display_results(frame, top_result, labels, inference_time):
+    for idx, (i, score) in enumerate (top_result):
+        labels_position = (3, 35 * idx + 60)
+        inference_position = (3, 20)
+        cv2.putText(frame, '{} - {:0.4f}'.format(labels[i], score),
+                    labels_position, FONT['hershey'], FONT['size'],
+                    FONT['color']['black'], FONT['thickness'] + 2)
+        cv2.putText(frame, '{} - {:0.4f}'.format(labels[i], score),
+                    labels_position, FONT['hershey'], FONT['size'],
+                    FONT['color']['blue'], FONT['thickness'])
+        cv2.putText(frame, "{}: {}".format(INF_TIME_MSG, inference_time),
+                    inference_position, FONT['hershey'], 0.5,
+                    FONT['color']['black'], 2, cv2.LINE_AA)
+        cv2.putText(frame, "{}: {}".format(INF_TIME_MSG, inference_time),
+                    inference_position, FONT['hershey'], 0.5,
+                    FONT['color']['white'], 1, cv2.LINE_AA)
+    return frame
+
+def image_classification(args):
     labels = load_labels(args)
 
     interpreter = Interpreter(model_path=args['model'])
@@ -53,14 +71,18 @@ def image_classification(args, k = 3):
 
         output_details = interpreter.get_output_details()[0]
         output = np.squeeze(interpreter.get_tensor(output_details['index']))
-        results = output.argsort()[-k:][::-1]
-        for i in results:
-            score = float(output[i] / 255.0)
-            print("[{:.2%}]: {}".format(score, labels[i]))
 
-        print("INFERENCE TIME: {} seconds".format(timer.time))
-        cv2.imshow("Video Classification Example", frame)
+        k = int(args['kresults'])
+        top_k = output.argsort()[-k:][::-1]
+        result = []
+        for i in top_k:
+            score = float(output[i] / 255.0)
+            result.append((i, score))
+
+        frame = display_results(frame, result, labels, timer.time)
+        cv2.imshow(TITLE, frame)
         cv2.waitKey(1)
+
     video_capture.release()
     cv2.destroyAllWindows()
 
@@ -82,5 +104,9 @@ if __name__ == "__main__":
           '--videofmw',
           default='opencv',
           help='gstreamer or opencv (default)')
+    parser.add_argument(
+          '--kresults',
+          default='3',
+          help='number of displayed results')
     args = vars(parser.parse_args())
     image_classification(args)
