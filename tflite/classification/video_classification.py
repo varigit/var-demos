@@ -1,6 +1,7 @@
 # Copyright 2021 Variscite LTD
 # SPDX-License-Identifier: BSD-3-Clause
 import argparse
+import sys
 
 import cv2
 import numpy as np
@@ -10,13 +11,16 @@ from tflite_runtime.interpreter import Interpreter
 from utils import Timer
 
 def open_video_capture(args):
-    if args['videofmw'] is False:
+    if (args['videofmw'] == "opencv"):
         pipeline = "{}".format(args['video'])
-    else:
+    elif (args['videofmw'] == "gstreamer"):
         pipeline = "filesrc location={} ! qtdemux name=d d.video_0 ! " \
                    "decodebin ! queue leaky=downstream max-size-buffers=1 ! " \
                    "queue ! imxvideoconvert_g2d ! " \
                    "videoconvert ! appsink".format(args['video'])
+    else:
+        print("Invalid argument!")
+        sys.exit(0)
     return cv2.VideoCapture(pipeline)
 
 def load_labels(args):
@@ -76,7 +80,7 @@ if __name__ == "__main__":
           help='video to be classified')
     parser.add_argument(
           '--videofmw',
-          default=False,
-          help='gstreamer or native opencv (default)')
+          default='opencv',
+          help='gstreamer or opencv (default)')
     args = vars(parser.parse_args())
     image_classification(args)
