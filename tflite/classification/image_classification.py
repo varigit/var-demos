@@ -55,6 +55,6 @@ if __name__ == "__main__":
     parser.add_argument(
           '--image',
           default='image.jpg',
-          help='image to be classified')
+          help='image file to be classified')
     args = vars(parser.parse_args())
     image_classification(args)
