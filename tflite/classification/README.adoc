@@ -18,59 +18,107 @@ endif::[]
 +
 [source,console]
 ----
-$ cd ~
-$ git clone https://github.com/varigit/var-demos.git \
-  && cd ~/var-demos/tflite/classification
+git clone https://github.com/varigit/var-demos.git ~/var-demos
 ----
 +
-. Retrieve the starter image classification model from TensorFlow Lite to the classification folder:
+. Retrieve the starter `image classification model` from `TensorFlow Lite` to the classification folder:
 +
 [source,console]
 ----
-$ wget -q https://storage.googleapis.com/download.tensorflow.org/models/tflite/mobilenet_v1_1.0_224_quant_and_labels.zip
+cd ~/var-demos/tflite/classification
+wget -q https://storage.googleapis.com/download.tensorflow.org/models/tflite/mobilenet_v1_1.0_224_quant_and_labels.zip
 ----
 +
-.. Extract the model in the directory:
+.. Extract the `image classification model` to the classification folder:
 +
 [source,console]
 ----
-$ unzip mobilenet_v1_1.0_224_quant_and_labels.zip
+unzip mobilenet_v1_1.0_224_quant_and_labels.zip
 ----
 +
 .. Remove the **not** required files to the examples:
 +
 [source,console]
 ----
-$ rm -rf __MACOSX/ mobilenet_v1_1.0_224_quant_and_labels.zip
+rm -rf __MACOSX/ mobilenet_v1_1.0_224_quant_and_labels.zip
 ----
 +
-. Copy classification folder directory to the target module:
+. Copy the entire classification folder to the target module:
 +
 [source,console]
 ----
-$ scp -r ~/var-demos/tflite/classification root@<target-ip>:/home/root
+scp -r ~/var-demos/tflite/classification root@<target-ip>:/home/root
 ----
+
+=== Usage
 
 ==== Image Classification Example
 
+. To run the classification example using a single image:
++
 [source,console]
 ----
-$ cd /home/root/classification
-$ python3 image_classification.py
+cd /home/root/classification
+python3 image_classification.py
 ----
++
+. Check the available arguments:
++
+[source,console]
+----
+python3 image_classification.py -h
+----
++
+Default values::
+* `--model`: mobilenet_v1_1.0_224_quant.tflite
+* `--label`: labels_mobilenet_quant_v1_224.txt
+* `--image`: data/image.jpg
+* `--kresults`: 3
 
 ==== Video Classification Example
 
+. To run the classification example using a video file:
++
 [source,console]
 ----
-$ cd /home/root/classification
-$ python3 video_classification.py
+cd /home/root/classification
+python3 video_classification.py
 ----
++
+. Check the available arguments:
++
+[source,console]
+----
+python3 video_classification.py -h
+----
++
+Default values::
+* `--model`: mobilenet_v1_1.0_224_quant.tflite
+* `--label`: labels_mobilenet_quant_v1_224.txt
+* `--video`: data/video.mp4
+* `--videofmw`: opencv
+* `--kresults`: 3
 
 ==== Realtime Classification Example
 
+. To run the classification example in realtime:
++
 [source,console]
 ----
-$ cd /home/root/classification
-$ python3 realtime_classification.py
+cd /home/root/classification
+python3 realtime_classification.py
 ----
++
+. Check the available arguments:
++
+[source,console]
+----
+python3 realtime_classification.py -h
+----
++
+Default values::
+* `--model`: mobilenet_v1_1.0_224_quant.tflite
+* `--label`: labels_mobilenet_quant_v1_224.txt
+* `--camera`: /dev/video1
+* `--videofmw`: opencv
+* `--kresults`: 3
