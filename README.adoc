@@ -10,4 +10,8 @@ ifdef::env-github[]
 :source-highlighter: :rouge:
 endif::[]
 
-= Variscite LTD - Machine Learning Applications
+= Machine Learning Samples
+
+== TensorFlow Lite
+
+* https://github.com/varigit/var-demos/blob/master/tflite/classification/README.adoc[Classification] examples using TensorFlow Lite starter model.
