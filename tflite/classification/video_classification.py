@@ -80,7 +80,7 @@ if __name__ == "__main__":
           help='name of file containing labels')
     parser.add_argument(
           '--video',
-          default='video.mp4',
+          default='media/video.mp4',
           help='video file to be classified')
     parser.add_argument(
           '--videofmw',

@@ -56,7 +56,7 @@ if __name__ == "__main__":
           help='name of file containing labels')
     parser.add_argument(
           '--image',
-          default='image.jpg',
+          default='media/image.jpg',
           help='image file to be classified')
     parser.add_argument(
           '--kresults',
