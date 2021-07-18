@@ -6,11 +6,11 @@ import numpy as np
 from PIL import Image
 from tflite_runtime.interpreter import Interpreter
 
+from utils import load_labels
 from utils import Timer
 
-def image_classification(args, k = 3):
-    with open(args['label']) as f:
-        labels = f.read().splitlines()
+def image_classification(args):
+    labels = load_labels(args)
 
     interpreter = Interpreter(model_path=args['model'])
     interpreter.allocate_tensors()
@@ -34,6 +34,8 @@ def image_classification(args, k = 3):
 
     output_details = interpreter.get_output_details()[0]
     output = np.squeeze(interpreter.get_tensor(output_details['index']))
+
+    k = int(args['kresults'])
     results = output.argsort()[-k:][::-1]
     for i in results:
         score = float(output[i] / 255.0)
@@ -56,5 +58,9 @@ if __name__ == "__main__":
           '--image',
           default='image.jpg',
           help='image file to be classified')
+    parser.add_argument(
+          '--kresults',
+          default='3',
+          help='number of displayed results')
     args = vars(parser.parse_args())
     image_classification(args)
