@@ -8,20 +8,25 @@ from PIL import Image
 from tflite_runtime.interpreter import Interpreter
 
 from config import TITLE
-from utils import load_labels
-from utils import put_info_on_frame
-from utils import Timer
+from utils import put_info_on_frame, load_labels
+from utils import Timer, Framerate
 
-def open_video_capture(args):
+def open_video_capture(args, width = 640, height = 480, framerate = "30/1"):
     if (args['videofmw'] == "opencv"):
-        pipeline = int("{}".format(args['camera']))
+        dev = "{}".format(args['camera'])
+        pipeline = int(dev[10:])
+        video = cv2.VideoCapture(pipeline)
+        video.set(cv2.CAP_PROP_FRAME_WIDTH, width)
+        video.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
     elif (args['videofmw'] == "gstreamer"):
-        pipeline = "v4l2src device=/dev/video{} ! queue leaky=downstream " \
+        pipeline = "v4l2src device={} ! video/x-raw,width={},height={}," \
+                   "framerate={} ! queue leaky=downstream " \
                    "max-size-buffers=1 ! videoconvert ! " \
-                   "appsink".format(args['camera'])
+                   "appsink".format(args['camera'], width, height, framerate)
+        video = cv2.VideoCapture(pipeline)
     else:
         raise SystemExit("videofmw: invalid value. Use 'opencv' or 'gstreamer'")
-    return cv2.VideoCapture(pipeline)
+    return video
 
 def realtime_classification(args):
     labels = load_labels(args)
@@ -35,31 +40,35 @@ def realtime_classification(args):
 
     video_capture = open_video_capture(args)
 
-    while video_capture.isOpened():        
-        check, frame = video_capture.read()
-        if check is not True:
-            break
-        resized_frame = cv2.resize(frame, (width, height))
-        resized_frame = np.expand_dims(resized_frame, axis = 0)        
+    framerate = Framerate()
+    while video_capture.isOpened():
+        with framerate.fpsit():
+            check, frame = video_capture.read()
+            if check is not True:
+                break
+            resized_frame = cv2.resize(frame, (width, height))
+            resized_frame = np.expand_dims(resized_frame, axis = 0)
 
-        interpreter.set_tensor(input_details[0]['index'], resized_frame)
-        timer = Timer()
-        with timer.timeit():
-            interpreter.invoke()
+            interpreter.set_tensor(input_details[0]['index'], resized_frame)
+            timer = Timer()
+            with timer.timeit():
+                interpreter.invoke()
 
-        output_details = interpreter.get_output_details()[0]
-        output = np.squeeze(interpreter.get_tensor(output_details['index']))
+            output_details = interpreter.get_output_details()[0]
+            output = np.squeeze(interpreter.get_tensor(output_details['index']))
 
-        k = int(args['kresults'])
-        top_k = output.argsort()[-k:][::-1]
-        result = []
-        for i in top_k:
-            score = float(output[i] / 255.0)
-            result.append((i, score))
+            k = int(args['kresults'])
+            top_k = output.argsort()[-k:][::-1]
+            result = []
+            for i in top_k:
+                score = float(output[i] / 255.0)
+                result.append((i, score))
 
-        frame = put_info_on_frame(frame, result, labels, timer.time, args)
-        cv2.imshow(TITLE, frame)
-        cv2.waitKey(1)
+            frame = put_info_on_frame(frame, result, labels,
+                                      timer.time, args['model'], args['camera'])
+            cv2.imshow(TITLE, frame)
+            print("Framerate: {}".format(framerate.fps))
+            cv2.waitKey(1)
 
     video_capture.release()
     cv2.destroyAllWindows()
@@ -76,7 +85,7 @@ if __name__ == "__main__":
           help='name of file containing labels')
     parser.add_argument(
           '--camera',
-          default='2',
+          default='/dev/video1',
           help='device path to camera, e.g.: /dev/video<x>')
     parser.add_argument(
           '--videofmw',
