@@ -1,6 +1,7 @@
 # Copyright 2021 Variscite LTD
 # SPDX-License-Identifier: BSD-3-Clause
 
+import collections
 from contextlib import contextmanager
 from datetime import timedelta
 from time import monotonic
@@ -25,14 +26,27 @@ class Timer:
     def convert(self, elapsed):
         self.time = str(timedelta(seconds=elapsed))
 
+class Framerate:
+    def __init__(self):
+        self.fps = 0
+        self.window = collections.deque(maxlen=30)
+
+    @contextmanager
+    def fpsit(self):
+        begin = monotonic()
+        try:
+            yield
+        finally:
+            end = monotonic()
+            self.window.append(end - begin)
+            self.fps = len(self.window) / sum(self.window)
+
 def load_labels(args):
     with open(args['label'], 'r') as f:
         return [line.strip() for line in f.readlines()]
 
-def put_info_on_frame(frame, top_result, labels, inference_time, args):
-    source_file = args['video']
-    model_name = args['model']
-
+def put_info_on_frame(frame, top_result, labels,
+                      inference_time, model_name, source_file):
     for idx, (i, score) in enumerate (top_result):
         labels_position = (3, 35 * idx + 60)
         inference_position = (3, 20)
