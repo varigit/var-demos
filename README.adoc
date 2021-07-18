@@ -15,3 +15,4 @@ endif::[]
 == TensorFlow Lite
 
 * https://github.com/varigit/var-demos/blob/master/tflite/classification/README.adoc[Classification] examples using TensorFlow Lite starter model.
+* https://github.com/varigit/var-demos/blob/master/tflite/detection/README.adoc[Detection] examples using TensorFlow Lite starter model.
