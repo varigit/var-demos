@@ -25,7 +25,7 @@ def open_video_capture(args):
     return cv2.VideoCapture(pipeline)
 
 def video_classification(args):
-    labels = load_labels(args)
+    labels = load_labels(args['label'])
 
     interpreter = Interpreter(model_path=args['model'])
     interpreter.allocate_tensors()

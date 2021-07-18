@@ -29,7 +29,7 @@ def open_video_capture(args, width = 640, height = 480, framerate = "30/1"):
     return video
 
 def realtime_classification(args):
-    labels = load_labels(args)
+    labels = load_labels(args['label'])
 
     interpreter = Interpreter(model_path=args['model'])
     interpreter.allocate_tensors()

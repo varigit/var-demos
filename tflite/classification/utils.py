@@ -41,8 +41,8 @@ class Framerate:
             self.window.append(end - begin)
             self.fps = len(self.window) / sum(self.window)
 
-def load_labels(args):
-    with open(args['label'], 'r') as f:
+def load_labels(labels_file: str) -> list:
+    with open(labels_file, 'r') as f:
         return [line.strip() for line in f.readlines()]
 
 def put_info_on_frame(frame, top_result, labels,

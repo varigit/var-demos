@@ -10,7 +10,7 @@ from utils import load_labels
 from utils import Timer
 
 def image_classification(args):
-    labels = load_labels(args)
+    labels = load_labels(args['label'])
 
     interpreter = Interpreter(model_path=args['model'])
     interpreter.allocate_tensors()
