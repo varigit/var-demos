@@ -10,7 +10,7 @@ from tflite_runtime.interpreter import Interpreter
 from config import TITLE
 from utils import load_labels
 from utils import put_info_on_frame
-from utils import Timer
+from utils import Timer, Framerate
 
 def open_video_capture(args):
     if (args['videofmw'] == "opencv"):
@@ -35,32 +35,35 @@ def video_classification(args):
     _, height, width, _ = input_details[0]['shape']
 
     video_capture = open_video_capture(args)
+    framerate = Framerate()
+    while video_capture.isOpened():
+        with framerate.fpsit():
+            check, frame = video_capture.read()
+            if check is not True:
+                break
+            resized_frame = cv2.resize(frame, (width, height))
+            resized_frame = np.expand_dims(resized_frame, axis = 0)
 
-    while video_capture.isOpened():        
-        check, frame = video_capture.read()
-        if check is not True:
-            break
-        resized_frame = cv2.resize(frame, (width, height))
-        resized_frame = np.expand_dims(resized_frame, axis = 0)        
+            interpreter.set_tensor(input_details[0]['index'], resized_frame)
+            timer = Timer()
+            with timer.timeit():
+                interpreter.invoke()
 
-        interpreter.set_tensor(input_details[0]['index'], resized_frame)
-        timer = Timer()
-        with timer.timeit():
-            interpreter.invoke()
+            output_details = interpreter.get_output_details()[0]
+            output = np.squeeze(interpreter.get_tensor(output_details['index']))
 
-        output_details = interpreter.get_output_details()[0]
-        output = np.squeeze(interpreter.get_tensor(output_details['index']))
+            k = int(args['kresults'])
+            top_k = output.argsort()[-k:][::-1]
+            result = []
+            for i in top_k:
+                score = float(output[i] / 255.0)
+                result.append((i, score))
 
-        k = int(args['kresults'])
-        top_k = output.argsort()[-k:][::-1]
-        result = []
-        for i in top_k:
-            score = float(output[i] / 255.0)
-            result.append((i, score))
-
-        frame = put_info_on_frame(frame, result, labels, timer.time, args)
-        cv2.imshow(TITLE, frame)
-        cv2.waitKey(1)
+            frame = put_info_on_frame(frame, result, labels,
+                                      timer.time, args['model'], args['video'])
+            cv2.imshow(TITLE, frame)
+            print("Framerate: {}".format(framerate.fps))
+            cv2.waitKey(1)
 
     video_capture.release()
     cv2.destroyAllWindows()
