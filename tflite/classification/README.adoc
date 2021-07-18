@@ -1,0 +1,76 @@
+// Copyright 2021 Variscite LTD
+// SPDX-License-Identifier: BSD-3-Clause
+
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+:source-highlighter: :rouge:
+endif::[]
+
+== Classification Examples
+
+=== Get Started with the Initial Steps
+
+. Get the source code from this demo repository:
++
+[source,console]
+----
+$ cd ~
+$ git clone https://github.com/varigit/var-demos.git \
+  && cd ~/var-demos/tflite/classification
+----
++
+. Retrieve the starter image classification model from TensorFlow Lite to the classification folder:
++
+[source,console]
+----
+$ wget -q https://storage.googleapis.com/download.tensorflow.org/models/tflite/mobilenet_v1_1.0_224_quant_and_labels.zip
+----
++
+.. Extract the model in the directory:
++
+[source,console]
+----
+$ unzip mobilenet_v1_1.0_224_quant_and_labels.zip
+----
++
+.. Remove the **not** required files to the examples:
++
+[source,console]
+----
+$ rm -rf __MACOSX/ mobilenet_v1_1.0_224_quant_and_labels.zip
+----
++
+. Copy classification folder directory to the target module:
++
+[source,console]
+----
+$ scp -r ~/var-demos/tflite/classification root@<target-ip>:/home/root
+----
+
+==== Image Classification Example
+
+[source,console]
+----
+$ cd /home/root/classification
+$ python3 image_classification.py
+----
+
+==== Video Classification Example
+
+[source,console]
+----
+$ cd /home/root/classification
+$ python3 video_classification.py
+----
+
+==== Realtime Classification Example
+
+[source,console]
+----
+$ cd /home/root/classification
+$ python3 realtime_classification.py
+----
