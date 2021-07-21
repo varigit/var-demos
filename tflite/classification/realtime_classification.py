@@ -8,7 +8,7 @@ from PIL import Image
 from tflite_runtime.interpreter import Interpreter
 
 from helper.config import TITLE
-from helper.opencv import put_info_on_frame
+from helper.opencv import put_info_on_frame, put_fps_on_frame
 from helper.utils import load_labels, Timer, Framerate
 
 def open_video_capture(args, width = 640, height = 480, framerate = "30/1"):
@@ -66,8 +66,8 @@ def realtime_classification(args):
 
             frame = put_info_on_frame(frame, result, labels,
                                       timer.time, args['model'], args['camera'])
+            frame = put_fps_on_frame(frame, framerate.fps)
             cv2.imshow(TITLE, frame)
-            print("Framerate: {}".format(framerate.fps))
             cv2.waitKey(1)
 
     video_capture.release()

@@ -3,7 +3,7 @@
 
 import cv2
 
-from helper.config import INF_TIME_MSG, FONT
+from helper.config import INF_TIME_MSG, FONT, FPS_MSG
 
 def put_info_on_frame(frame, top_result, labels,
                       inference_time, model_name, source_file):
@@ -39,4 +39,16 @@ def put_info_on_frame(frame, top_result, labels,
                 FONT['hershey'], 0.5, FONT['color']['black'], 2, cv2.LINE_AA)
     cv2.putText(frame, "{}: {}".format("model", model_name), (3, y_offset),
                 FONT['hershey'], 0.5, FONT['color']['white'], 1, cv2.LINE_AA)
+    return frame
+
+def put_fps_on_frame(frame, fps):
+    fps_msg = "{}: {}".format(FPS_MSG, int(fps))
+    x_offset = frame.shape[1] - (cv2.getTextSize(fps_msg, FONT['hershey'],
+                                                 0.8, 2)[0][0] + 10)
+    cv2.putText(frame, fps_msg,
+                (x_offset, 25), FONT['hershey'], 0.8,
+                FONT['color']['black'], 2, cv2.LINE_AA)
+    cv2.putText(frame, fps_msg,
+                (x_offset, 25), FONT['hershey'], 0.8,
+                FONT['color']['white'], 1, cv2.LINE_AA)
     return frame
