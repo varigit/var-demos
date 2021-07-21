@@ -32,10 +32,7 @@ def image_detection(args):
     interpreter.set_tensor(input_details[0]['index'], image_resized)
 
     timer = Timer()
-    with timer.timeit():
-        interpreter.invoke()
-    warm_up_time = timer.time
-
+    interpreter.invoke()
     with timer.timeit():
         interpreter.invoke()
 
