@@ -8,9 +8,8 @@ from PIL import Image
 from tflite_runtime.interpreter import Interpreter
 
 from helper.config import TITLE
-from helper.utils import load_labels
-from helper.utils import put_info_on_frame
-from helper.utils import Timer, Framerate
+from helper.opencv import put_info_on_frame
+from helper.utils import load_labels, Timer, Framerate
 
 def open_video_capture(args):
     if (args['videofmw'] == "opencv"):
