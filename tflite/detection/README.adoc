@@ -11,3 +11,89 @@ ifdef::env-github[]
 endif::[]
 
 == Detection Examples
+
+=== Get Started with the Initial Steps
+
+. Get the source code from this demo repository:
++
+[source,console]
+----
+git clone https://github.com/varigit/var-demos.git ~/var-demos
+----
++
+. Copy the entire detection folder to the target module:
++
+[source,console]
+----
+scp -r ~/var-demos/tflite/detection root@<target-ip>:/home/root
+----
+
+=== Usage
+
+==== Image Detection Example
+
+. To run the detection example using a single image:
++
+[source,console]
+----
+cd /home/root/detection
+python3 image_detection.py
+----
++
+. Check the available arguments:
++
+[source,console]
+----
+python3 image_detection.py -h
+----
++
+Default values::
+* `--model`: model/ssd_mobilenet_v1_1_default_1.tflite
+* `--label`: model/labels_ssd_mobilenet_v1.txt
+* `--image`: data/image.jpg
+
+==== Video Detection Example
+
+. To run the detection example using a video file:
++
+[source,console]
+----
+cd /home/root/detection
+python3 video_detection.py
+----
++
+. Check the available arguments:
++
+[source,console]
+----
+python3 video_detection.py -h
+----
++
+Default values::
+* `--model`: model/ssd_mobilenet_v1_1_default_1.tflite
+* `--label`: model/labels_ssd_mobilenet_v1.txt
+* `--video`: data/video.mp4
+* `--videofmw`: opencv
+
+==== Realtime Detection Example
+
+. To run the detection example in realtime:
++
+[source,console]
+----
+cd /home/root/detection
+python3 realtime_detection.py
+----
++
+. Check the available arguments:
++
+[source,console]
+----
+python3 realtime_detection.py -h
+----
++
+Default values::
+* `--model`: model/ssd_mobilenet_v1_1_default_1.tflite
+* `--label`: model/labels_ssd_mobilenet_v1.txt
+* `--camera`: /dev/video1
+* `--videofmw`: opencv
