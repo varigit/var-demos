@@ -3,6 +3,7 @@
 
 import cv2
 
+INF_TIME_MSG = "INFERENCE TIME"
 TITLE = "DETECTION"
 
 FONT = {'hershey': cv2.FONT_HERSHEY_SIMPLEX,
