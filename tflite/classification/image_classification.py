@@ -2,12 +2,14 @@
 # SPDX-License-Identifier: BSD-3-Clause
 import argparse
 
+import cv2
 import numpy as np
 from PIL import Image
 from tflite_runtime.interpreter import Interpreter
 
-from helper.utils import load_labels
-from helper.utils import Timer
+from helper.config import TITLE
+from helper.opencv import put_info_on_frame
+from helper.utils import load_labels, Timer
 
 def image_classification(args):
     labels = load_labels(args['label'])
@@ -19,16 +21,15 @@ def image_classification(args):
 
     with Image.open(args['image']) as im:
         _, height, width, _ = input_details[0]['shape']
-        image = im.resize((width, height))
-        image = np.expand_dims(image, axis = 0)
+        image = np.array(im)
+        image = image[:, :, ::-1].copy()
+        image_resized = im.resize((width, height))
+        image_resized = np.expand_dims(image_resized, axis = 0)
 
-    interpreter.set_tensor(input_details[0]['index'], image)
+    interpreter.set_tensor(input_details[0]['index'], image_resized)
 
     timer = Timer()
-    with timer.timeit():
-        interpreter.invoke()
-    warm_up_time = timer.time
-
+    interpreter.invoke()
     with timer.timeit():
         interpreter.invoke()
 
@@ -36,13 +37,16 @@ def image_classification(args):
     output = np.squeeze(interpreter.get_tensor(output_details['index']))
 
     k = int(args['kresults'])
-    results = output.argsort()[-k:][::-1]
-    for i in results:
+    top_k = output.argsort()[-k:][::-1]
+    result = []
+    for i in top_k:
         score = float(output[i] / 255.0)
-        print("[{:.2%}]: {}".format(score, labels[i]))
+        result.append((i, score))
 
-    print("WARM-UP TIME:   {} seconds".format(warm_up_time))
-    print("INFERENCE TIME: {} seconds".format(timer.time))
+    image = put_info_on_frame(image, result, labels,
+                              timer.time, args['model'], args['image'])
+    cv2.imshow(TITLE, image)
+    cv2.waitKey()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
