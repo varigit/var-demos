@@ -8,7 +8,7 @@ from time import monotonic
 
 import cv2
 
-from config import INF_TIME_MSG, FONT
+from helper.config import INF_TIME_MSG, FONT
 
 class Timer:
     def __init__(self):

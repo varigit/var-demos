@@ -6,8 +6,8 @@ import numpy as np
 from PIL import Image
 from tflite_runtime.interpreter import Interpreter
 
-from utils import load_labels
-from utils import Timer
+from helper.utils import load_labels
+from helper.utils import Timer
 
 def image_classification(args):
     labels = load_labels(args['label'])
