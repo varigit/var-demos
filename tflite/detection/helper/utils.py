@@ -12,7 +12,7 @@ from time import monotonic
 import cv2
 import numpy as np
 
-from config import FONT, TITLE, INF_TIME_MSG
+from helper.config import FONT, TITLE, INF_TIME_MSG
 
 class Timer:
     def __init__(self):

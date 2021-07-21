@@ -10,9 +10,9 @@ import numpy as np
 from PIL import Image
 from tflite_runtime.interpreter import Interpreter
 
-from config import TITLE
-from utils import get_tensor, load_labels, put_info_on_frame
-from utils import Timer
+from helper.config import TITLE
+from helper.utils import get_tensor, load_labels, put_info_on_frame
+from helper.utils import Timer
 
 def image_detection(args):
     labels = load_labels(args['label'])
