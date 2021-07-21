@@ -11,8 +11,8 @@ from PIL import Image
 from tflite_runtime.interpreter import Interpreter
 
 from helper.config import TITLE
-from helper.utils import get_tensor, load_labels, put_info_on_frame
-from helper.utils import Timer
+from helper.opencv import put_info_on_frame
+from helper.utils import get_tensor, load_labels, Timer
 
 def open_video_capture(args, width = 640, height = 480, framerate = "30/1"):
     if (args['videofmw'] == "opencv"):
