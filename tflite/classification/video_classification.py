@@ -72,11 +72,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
           '--model',
-          default='mobilenet_v1_1.0_224_quant.tflite',
+          default='model/mobilenet_v1_1.0_224_quant.tflite',
           help='.tflite model to be executed')
     parser.add_argument(
           '--label',
-          default='labels_mobilenet_quant_v1_224.txt',
+          default='model/labels_mobilenet_quant_v1_224.txt',
           help='name of file containing labels')
     parser.add_argument(
           '--video',
