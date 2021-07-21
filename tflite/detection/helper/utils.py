@@ -25,6 +25,21 @@ class Timer:
     def convert(self, elapsed):
         self.time = str(timedelta(seconds=elapsed))
 
+class Framerate:
+    def __init__(self):
+        self.fps = 0
+        self.window = collections.deque(maxlen=30)
+
+    @contextmanager
+    def fpsit(self):
+        begin = monotonic()
+        try:
+            yield
+        finally:
+            end = monotonic()
+            self.window.append(end - begin)
+            self.fps = len(self.window) / sum(self.window)
+
 def load_labels(path):
     p = re.compile(r'\s*(\d+)(.+)')
     with open(path, 'r', encoding='utf-8') as f:

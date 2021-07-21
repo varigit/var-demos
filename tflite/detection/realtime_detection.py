@@ -11,8 +11,8 @@ from PIL import Image
 from tflite_runtime.interpreter import Interpreter
 
 from helper.config import TITLE
-from helper.opencv import put_info_on_frame
-from helper.utils import get_tensor, load_labels, Timer
+from helper.opencv import put_info_on_frame, put_fps_on_frame
+from helper.utils import get_tensor, load_labels, Timer, Framerate
 
 def open_video_capture(args, width = 640, height = 480, framerate = "30/1"):
     if (args['videofmw'] == "opencv"):
@@ -40,34 +40,40 @@ def image_detection(args):
     output_details = interpreter.get_output_details()
 
     model_height, model_width = input_details[0]['shape'][1:3]
-    
+
     video_capture = open_video_capture(args)
+    framerate = Framerate()
     while video_capture.isOpened():
-        check, frame = video_capture.read()
-        if check is not True:
-            break
+        with framerate.fpsit():
+            check, frame = video_capture.read()
+            if check is not True:
+                break
 
-        resized_frame = cv2.resize(frame, (model_width, model_height))
-        resized_frame = np.expand_dims(resized_frame, axis = 0)
-            
-        interpreter.set_tensor(input_details[0]['index'], resized_frame)
-        timer = Timer()
-        with timer.timeit():
-            interpreter.invoke()
+            resized_frame = cv2.resize(frame, (model_width, model_height))
+            resized_frame = np.expand_dims(resized_frame, axis = 0)
 
-        positions = get_tensor(0, interpreter, output_details, squeeze=True)
-        classes = get_tensor(1, interpreter,  output_details, squeeze=True)
-        scores = get_tensor(2, interpreter, output_details, squeeze=True)
+            interpreter.set_tensor(input_details[0]['index'], resized_frame)
+            timer = Timer()
+            with timer.timeit():
+                interpreter.invoke()
 
-        result = []
-        for idx, score in enumerate(scores):
-            if score > 0.5:
-                result.append({'pos': positions[idx], '_id': classes[idx]})
+            positions = get_tensor(0, interpreter, output_details, squeeze=True)
+            classes = get_tensor(1, interpreter,  output_details, squeeze=True)
+            scores = get_tensor(2, interpreter, output_details, squeeze=True)
 
-        frame = put_info_on_frame(frame, result, timer.time, labels,
-                                  args['model'], args['camera'])
-        cv2.imshow(TITLE, frame)
-        cv2.waitKey(1)
+            result = []
+            for idx, score in enumerate(scores):
+                if score > 0.5:
+                    result.append({'pos': positions[idx], '_id': classes[idx]})
+
+            frame = put_info_on_frame(frame, result, timer.time, labels,
+                                      args['model'], args['camera'])
+            frame = put_fps_on_frame(frame, framerate.fps)
+            cv2.imshow(TITLE, frame)
+            cv2.waitKey(1)
+
+    video_capture.release()
+    cv2.destroyAllWindows()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

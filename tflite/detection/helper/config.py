@@ -5,6 +5,7 @@ import cv2
 
 INF_TIME_MSG = "INFERENCE TIME"
 TITLE = "DETECTION"
+FPS_MSG = "FPS"
 
 FONT = {'hershey': cv2.FONT_HERSHEY_SIMPLEX,
         'size': 0.8,
