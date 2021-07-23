@@ -21,7 +21,6 @@ class MainWindow(Gtk.Window):
     def __init__(self):
         super(MainWindow, self).__init__(title="Sample Application")
         self.set_border_width(1)
-        self.set_default_size(300, 500)
         self.fullscreen()
 
         container = Gtk.Notebook()
@@ -83,8 +82,7 @@ class RealTimeDetection(Gtk.Box):
         super().__init__(spacing=10)
         self.model_path = TFLITE_MODEL_FILE_PATH
         self.labels_path = TFLITE_LABEL_FILE_PATH
-        # task: include all objects in the labels.
-        self.exclude_list = ["bus", "person", "car", "cat", "cup", "cell phone", "orange"]
+        self.exclude_list = SSD_LABELS_LIST
 
         self.labels = self.load_labels()
         self.interpreter = " "
@@ -156,7 +154,6 @@ class RealTimeDetection(Gtk.Box):
         else:
             if name not in self.exclude_list:
                 self.exclude_list.append(name)
-        print(self.exclude_list)
 
     def set_displayed_image(self, image):
         image = cv2.resize(image, (430, 350))
@@ -192,7 +189,7 @@ class RealTimeDetection(Gtk.Box):
         
         pipeline = "v4l2src device={} ! video/x-raw,width=320,height=240,framerate=30/1 ! queue leaky=downstream "\
                    "max-size-buffers=1 ! videoconvert ! appsink".format("/dev/video1")
-        #pipeline = 0        
+        #pipeline = 0
         video_capture = cv2.VideoCapture(pipeline)
         while video_capture.isOpened():
             _, frame = video_capture.read()
