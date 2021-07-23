@@ -17,9 +17,9 @@ from gi.repository import GLib, Gtk
 from helper import Timer, put_info_on_frame
 from config import *
 
-class MainWindow(Gtk.Window):
+class SampleApplication(Gtk.Window):
     def __init__(self):
-        super(MainWindow, self).__init__(title="Sample Application")
+        super().__init__(title="Sample Application")
         self.set_border_width(1)
         self.fullscreen()
 
@@ -215,7 +215,7 @@ class RealTimeDetection(Gtk.Box):
             self.set_displayed_image(frame)
 
 if __name__ == "__main__":
-    window = MainWindow()
-    window.connect("delete-event", Gtk.main_quit)
-    window.show_all()
+    app = SampleApplication()
+    app.connect("delete-event", Gtk.main_quit)
+    app.show_all()
     Gtk.main()
