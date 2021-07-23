@@ -37,9 +37,6 @@ class SampleApplication(Gtk.Window):
         container.append_page(realtime_page)
 
 class GetStarted(Gtk.Box):
-    '''
-    Getting Started Page -> Page #0
-    '''
     def __init__(self, parent):
         super().__init__(spacing=10)
         self.__parent = parent
@@ -53,19 +50,14 @@ class GetStarted(Gtk.Box):
         self.__parent.set_current_page(1)
 
 class  Loading(Gtk.Box):
-    '''
-    Loading Page -> Page #1
-    '''
     def __init__(self, parent):
         super().__init__(spacing=10)
         self.__parent = parent        
         self.progressbar = Gtk.ProgressBar()
         self.pack_start(self.progressbar, True, True, 0)
-           
         self.__parent.timeout_id = GLib.timeout_add(50, self.on_timeout, None)
         
     def on_timeout(self, user_data):
-        # task: get tensorflow times to use as fraction.
         if (self.__parent.get_current_page() == 1):
             new_value = self.progressbar.get_fraction() + 0.01
             if (new_value > 1):
@@ -75,9 +67,6 @@ class  Loading(Gtk.Box):
         return True
 
 class RealTimeDetection(Gtk.Box):
-    '''
-    Real Time Detection Page -> Page #2
-    '''
     def __init__(self, parent):
         super().__init__(spacing=10)
         self.model_path = TFLITE_MODEL_FILE_PATH
@@ -119,18 +108,15 @@ class RealTimeDetection(Gtk.Box):
         button.connect("toggled", self.on_check_button_toggled, "dog")
         check_button_box.pack_start(button, True, True, 0)
         
-        
         button = Gtk.CheckButton(label="CAT")
         button.set_active(False)
         button.connect("toggled", self.on_check_button_toggled, "cat")
         check_button_box.pack_start(button, True, True, 0)
         
-        
         button = Gtk.CheckButton(label="CUP")
         button.set_active(False)
         button.connect("toggled", self.on_check_button_toggled, "cup")
         check_button_box.pack_start(button, True, True, 0)
-        
         
         button = Gtk.CheckButton(label="CELL PHONE")
         button.set_active(False)
@@ -189,7 +175,6 @@ class RealTimeDetection(Gtk.Box):
         
         pipeline = "v4l2src device={} ! video/x-raw,width=320,height=240,framerate=30/1 ! queue leaky=downstream "\
                    "max-size-buffers=1 ! videoconvert ! appsink".format("/dev/video1")
-        #pipeline = 0
         video_capture = cv2.VideoCapture(pipeline)
         while video_capture.isOpened():
             _, frame = video_capture.read()
