@@ -30,7 +30,7 @@ class GetStarted(Gtk.Box):
     def __init__(self, parent):
         super().__init__(spacing=10)
         self.__parent = parent
-        self.get_started_button = Gtk.Button("GET STARTED")
+        self.get_started_button = Gtk.Button(label="GET STARTED")
         self.get_started_button.connect("clicked", self.loading)
         self.get_started_button.set_border_width(20)
         self.get_started_button.set_valign(Gtk.Align.CENTER)
@@ -39,7 +39,7 @@ class GetStarted(Gtk.Box):
     def loading(self, widget):
         self.__parent.set_current_page(1)
 
-class  Loading(Gtk.Box):
+class Loading(Gtk.Box):
     def __init__(self, parent):
         super().__init__(spacing=10)
         self.__parent = parent        
