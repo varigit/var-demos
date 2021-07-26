@@ -19,7 +19,7 @@ from config import *
 
 class RealTimeDetection(Gtk.Box):
     def __init__(self, parent):
-        super().__init__(spacing=10)
+        super().__init__(spacing=1)
         self.model_path = TFLITE_MODEL_FILE_PATH
         self.labels_path = TFLITE_LABEL_FILE_PATH
         self.exclude_list = SSD_LABELS_LIST
@@ -28,14 +28,15 @@ class RealTimeDetection(Gtk.Box):
         self.interpreter = " "
         self.input_details = " "
         self.output_details = " "
+        self.pixbuf = " "
+        self.ss = False
         self.set_homogeneous(False)
         self.start_interpreter()
 
-        self.grid = Gtk.Grid(row_spacing=10, column_spacing=10, border_width=10)
+        self.grid = Gtk.Grid(row_spacing=15, column_spacing=15, border_width=1)
         self.add(self.grid)
 
-        # LABELS TO CHECK
-        self.check_button_box = Gtk.Box(Gtk.Orientation.HORIZONTAL,spacing=1)
+        self.check_button_box = Gtk.Box(spacing=1)
 
         button = Gtk.CheckButton(label="BUS")
         button.set_active(False)
@@ -56,81 +57,81 @@ class RealTimeDetection(Gtk.Box):
         button.set_active(False)
         button.connect("toggled", self.on_check_button_toggled, "dog")
         self.check_button_box.pack_start(button, True, True, 0)
-        
+
         button = Gtk.CheckButton(label="CAT")
         button.set_active(False)
         button.connect("toggled", self.on_check_button_toggled, "cat")
         self.check_button_box.pack_start(button, True, True, 0)
-        
+
         button = Gtk.CheckButton(label="CUP")
         button.set_active(False)
         button.connect("toggled", self.on_check_button_toggled, "cup")
         self.check_button_box.pack_start(button, True, True, 0)
-        
+
         button = Gtk.CheckButton(label="CELL PHONE")
         button.set_active(False)
         button.connect("toggled", self.on_check_button_toggled, "cell phone")
         self.check_button_box.pack_start(button, True, True, 0)
-        
+
         button = Gtk.CheckButton(label="BANANA")
         button.set_active(False)
         button.connect("toggled", self.on_check_button_toggled, "banana")
-        self.check_button_box.pack_start(button, True, True, 0)
+        self.check_button_box.pack_start(button, True, False, 0)
 
-        self.grid.attach(self.check_button_box, 0, 0, 2, 1)
+        button = Gtk.CheckButton(label="CLOCK")
+        button.set_active(False)
+        button.connect("toggled", self.on_check_button_toggled, "clock")
+        self.check_button_box.pack_start(button, True, False, 0)
 
-         # IMAGE BOX
+        self.grid.attach(self.check_button_box, 0, 0, 1, 1)
+
         self.displayed_image = Gtk.Image()
-        self.image_box = Gtk.Box(spacing=1)
+        self.image_box = Gtk.Box(spacing=5)
         self.image_box.pack_start(self.displayed_image, True, True, 0)
         self.grid.attach(self.image_box, 0, 1, 2, 1)
 
-        # SCREENSHOT
         self.screenshot_value_label = Gtk.Label.new(None)
-        # Screenshot Box
         self.screenshot_button = Gtk.Button(label="SCREENSHOT")
         self.screenshot_button.connect("clicked", self.on_screenshot_button_clicked)
-        self.screenshot_box = Gtk.Box(spacing=10)
-        self.screenshot_box.pack_start(self.screenshot_button, True, False, 0)
-        self.grid.attach(self.screenshot_box, 0, 3, 2, 1)
-        # Screenshot Value Box
-        self.screenshot_value_box = Gtk.Box(spacing=10)
+        self.close_button = Gtk.Button(label="CLOSE")
+        self.close_button.connect("clicked", self.on_close_button_clicked)
+        self.screenshot_box = Gtk.Box(spacing=5)
+        self.screenshot_box.pack_start(self.screenshot_button, True, True, 0)
+        self.screenshot_box.pack_start(self.close_button, True, True, 0)
+        self.grid.attach(self.screenshot_box, 0, 3, 1, 1)
+        self.screenshot_value_box = Gtk.Box(spacing=5)
         self.screenshot_value_box.pack_start(self.screenshot_value_label, True, True, 0)
-        self.grid.attach(self.screenshot_value_box, 0, 4, 2, 1)
+        self.grid.attach(self.screenshot_value_box, 0, 4, 1, 1)
         self.add(self.screenshot_value_label)
 
-        # Inference Value Label
         self.inference_value_label = Gtk.Label.new(None)
-        # Inferente Time Box
         self.inference_label = Gtk.Label()
         self.inference_label.set_markup("INFERENCE TIME")
-        self.inference_box = Gtk.Box(spacing=10)
+        self.inference_box = Gtk.Box(spacing=5)
         self.inference_box.pack_start(self.inference_label, True, True, 0)
-        self.grid.attach(self.inference_box, 1, 3, 2, 1)
-        # Inferente Time Value Box
-        self.inference_value_box = Gtk.Box(spacing=10)
+        self.grid.attach(self.inference_box, 1, 3, 1, 1)
+        self.inference_value_box = Gtk.Box(spacing=5)
         self.inference_value_box.pack_start(self.inference_value_label, True, True, 0)
-        self.grid.attach(self.inference_value_box, 1, 4, 2, 1)
+        self.grid.attach(self.inference_value_box, 1, 4, 1, 1)
 
-        # FPS Label
         self.fps_value_label = Gtk.Label.new(None)
-        # FPS Box
         self.fps_label = Gtk.Label()
         self.fps_label.set_markup("FPS")
-        self.fps_box = Gtk.Box(spacing=10)
+        self.fps_box = Gtk.Box(spacing=5)
         self.fps_box.pack_start(self.fps_label, True, True, 0)
-        self.grid.attach(self.fps_box, 2, 3, 2, 1)
-        # FPS Value Box
-        self.fps_value_box = Gtk.Box(spacing=10)
+        self.grid.attach(self.fps_box, 2, 3, 1, 1)
+        self.fps_value_box = Gtk.Box(spacing=5)
         self.fps_value_box.pack_start(self.fps_value_label, True, True, 0)
-        self.grid.attach(self.fps_value_box, 2, 4, 2, 1)
+        self.grid.attach(self.fps_value_box, 2, 4, 1, 1)
 
-        # Start
         GLib.idle_add(self.run_application)
 
     def on_screenshot_button_clicked(self, widget):
         print("Screenshot")
-        self.screenshot_value_label.set_text("{}".format("aaa"))
+        self.ss = True
+
+    def on_close_button_clicked(self, widget):
+        Gtk.main_quit()
 
     def on_check_button_toggled(self, button, name):
         if button.get_active():
@@ -141,12 +142,18 @@ class RealTimeDetection(Gtk.Box):
                 self.exclude_list.append(name)
 
     def set_displayed_image(self, image):
-        image = cv2.resize(image, (320, 240))
+        image = cv2.resize(image, (420, 340))
         image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
         height, width = image.shape[:2]
         arr = np.ndarray.tobytes(image)
-        pixbuf = Pixbuf.new_from_data(arr, Colorspace.RGB, False, 8, width, height, width * 3, None, None)
-        self.displayed_image.set_from_pixbuf(pixbuf)
+        self.pixbuf = Pixbuf.new_from_data(arr, Colorspace.RGB, False, 8, width, height, width * 3, None, None)
+        if (self.ss == True):
+            output = "image.jpeg"
+            #self.pixbuf.save(output)
+            self.screenshot_value_label.set_text("{}".format(output))
+            self.ss = False
+        self.displayed_image.set_from_pixbuf(self.pixbuf)
+        self.pixbuf = " "
     
     def run_application(self):
         thread = threading.Thread(target=self.image_detection)
@@ -197,7 +204,7 @@ class RealTimeDetection(Gtk.Box):
                         result.append({'pos': positions[idx], '_id': classes[idx]})
 
                 frame = put_info_on_frame(frame, result, self.labels)
-            self.inference_value_label.set_text("{}".format(timer.time))
-            self.fps_value_label.set_text("{}".format(int(framerate.fps)))
-            self.set_displayed_image(frame)
 
+            GLib.idle_add(self.inference_value_label.set_text, ("{}".format(timer.time)))
+            GLib.idle_add(self.fps_value_label.set_text, ("{}".format(int(framerate.fps))))
+            GLib.idle_add(self.set_displayed_image, (frame))
