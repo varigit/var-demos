@@ -1,0 +1,19 @@
+{
+	"VARISCITE": {
+		/* Target Device Settings */
+		"TARGET_IP":"192.168.0.141",
+
+		/* Project Settings */
+		"PROGRAM":"hello.bin",
+
+		/* Yocto SDK Configuration */
+		"ARCH":"aarch64-fslc-linux",
+		"OECORE_NATIVE_SYSROOT":"/opt/fslc-xwayland/3.3/sysroots/x86_64-fslcsdk-linux/",
+		"SDKTARGETSYSROOT": "/opt/fslc-xwayland/3.3/sysroots/cortexa53-crypto-fslc-linux",
+
+		/* Yocto SDK Constants */
+		"CC_PREFIX": "${config:VARISCITE.OECORE_NATIVE_SYSROOT}/usr/bin/${config:VARISCITE.ARCH}/${config:VARISCITE.ARCH}-",
+		"CXX": "${config:VARISCITE.CC_PREFIX}g++ --sysroot=${config:VARISCITE.SDKTARGETSYSROOT}",
+		"CC": "${config:VARISCITE.CC_PREFIX}gcc --sysroot=${config:VARISCITE.SDKTARGETSYSROOT}",
+	}
+}

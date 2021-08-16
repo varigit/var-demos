@@ -1,0 +1,12 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${config:VARISCITE.SDKTARGETSYSROOT}/usr/include/**"
+            ]
+        }
+    ],
+    "version": 4
+}
