@@ -1,0 +1,48 @@
+{
+    "version": "2.0.0",
+    /* Configure Yocto SDK Constants from settings.json */
+    "options": {
+        "env": {
+            "CXX": "${config:VARISCITE.CXX}",
+            "CC": "${config:VARISCITE.CC}",
+        }
+     },
+     /* Configure integrated VS Code Terminal */
+     "presentation": {
+        "echo": false,
+        "reveal": "always",
+        "focus": true,
+        "panel": "dedicated",
+        "showReuseMessage": true,
+    },
+    "tasks": [
+        /* Configure launch.json (debug) preLaunchTask Task */
+        {
+            "label": "var-deploy-gdb",
+            "isBackground": true,
+            "problemMatcher":{
+                "base": "$gcc",
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern":  "Deploying to target",
+                    "endsPattern":  "Starting GDB Server on Target"
+                }
+            },
+            "type": "shell",
+            "command": "sh",
+            "args": [
+                "var-deploy-gdb.sh",
+                "${config:VARISCITE.TARGET_IP}",
+                "${config:VARISCITE.PROGRAM}"
+            ],
+            "dependsOn": ["build"],
+        },
+        /* Configure Build Task */
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "make clean; make -j$(nproc)",
+            "problemMatcher": ["$gcc"]
+        },
+    ]
+}
