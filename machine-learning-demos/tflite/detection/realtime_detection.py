@@ -14,22 +14,12 @@ from helper.config import TITLE
 from helper.opencv import put_info_on_frame, put_fps_on_frame
 from helper.utils import get_tensor, load_labels, Timer, Framerate
 
-def open_video_capture(args, width = 640, height = 480, framerate = "30/1"):
-    if (args['videofmw'] == "opencv"):
-        dev = "{}".format(args['camera'])
-        pipeline = int(dev[10:])
-        video = cv2.VideoCapture(pipeline)
-        video.set(cv2.CAP_PROP_FRAME_WIDTH, width)
-        video.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
-    elif (args['videofmw'] == "gstreamer"):
-        pipeline = "v4l2src device={} ! video/x-raw,width={},height={}," \
-                   "framerate={} ! queue leaky=downstream " \
-                   "max-size-buffers=1 ! videoconvert ! " \
-                   "appsink".format(args['camera'], width, height, framerate)
-        video = cv2.VideoCapture(pipeline)
-    else:
-        raise SystemExit("videofmw: invalid value. Use 'opencv' or 'gstreamer'")
-    return video
+def open_video_capture(width = 640, height = 480, framerate = "30/1"):
+    pipeline = "v4l2src device={} ! video/x-raw,width={},height={}," \
+               "framerate={} ! queue leaky=downstream " \
+               "max-size-buffers=1 ! videoconvert ! " \
+               "appsink".format(args['camera'], width, height, framerate)
+    return cv2.VideoCapture(pipeline)
 
 def image_detection(args):
     labels = load_labels(args['label'])
@@ -41,7 +31,7 @@ def image_detection(args):
 
     model_height, model_width = input_details[0]['shape'][1:3]
 
-    video_capture = open_video_capture(args)
+    video_capture = open_video_capture()
     framerate = Framerate()
     while video_capture.isOpened():
         with framerate.fpsit():
@@ -89,9 +79,5 @@ if __name__ == "__main__":
           '--camera',
           default='/dev/video1',
           help='device path to camera, e.g.: /dev/video<x>')
-    parser.add_argument(
-          '--videofmw',
-          default='opencv',
-          help='opencv or gstreamer')
     args = vars(parser.parse_args())
     image_detection(args)
