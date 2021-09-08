@@ -1,9 +1,13 @@
 # Copyright 2021 Variscite LTD
 # SPDX-License-Identifier: BSD-3-Clause
 
+import os
+
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
+
+TFLITE_MODEL_DIR = os.path.join(os.getcwd(), "model")
 
 mnist_digits = keras.datasets.mnist
 (train_images, train_labels), (test_images, test_labels) = mnist_digits.load_data()
@@ -31,6 +35,6 @@ print(f"Test loss: {test_loss}")
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
 tflite_model = converter.convert()
 
-f = open("model/mnist.tflite", "wb")
+f = open(f"{TFLITE_MODEL_DIR}/mnist.tflite", "wb")
 f.write(tflite_model)
 f.close()
