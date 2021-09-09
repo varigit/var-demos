@@ -98,5 +98,4 @@ Default values::
 * `--model`: mobilenet_v1_1.0_224_quant.tflite
 * `--label`: labels_mobilenet_quant_v1_224.txt
 * `--camera`: /dev/video1
-* `--videofmw`: opencv
 * `--kresults`: 3

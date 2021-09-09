@@ -96,4 +96,3 @@ Default values::
 * `--model`: model/ssd_mobilenet_v1_1_default_1.tflite
 * `--label`: model/labels_ssd_mobilenet_v1.txt
 * `--camera`: /dev/video1
-* `--videofmw`: opencv
