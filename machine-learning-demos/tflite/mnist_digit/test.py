@@ -17,10 +17,14 @@ input_image = np.expand_dims(np.array(input_image, dtype=np.float32) / 255.0, 0)
 
 interpreter = Interpreter(model_path=f"{TFLITE_MODEL_DIR}/mnist.tflite")
 interpreter.allocate_tensors()
-interpreter.set_tensor(interpreter.get_input_details()[0]["index"], input_image)
+
+input_details = interpreter.get_input_details()
+output_details = interpreter.get_output_details()
+
+interpreter.set_tensor(input_details[0]["index"], input_image)
 
 interpreter.invoke()
-result = interpreter.tensor(interpreter.get_output_details()[0]["index"])()[0]
+result = interpreter.tensor(output_details[0]["index"])()[0]
 
 digit = np.argmax(result)
 print(f"Predicted Digit: {digit}\nConfidence: {result[digit]}")
