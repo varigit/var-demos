@@ -5,7 +5,6 @@ import os
 
 import cv2
 import numpy as np
-from PIL import Image
 from tflite_runtime.interpreter import Interpreter
 
 DATA_DIR = os.path.join(os.getcwd(), "data")
