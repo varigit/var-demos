@@ -16,5 +16,10 @@ endif::[]
 
 === TensorFlow Lite
 
-* https://github.com/varigit/var-demos/blob/master/tflite/classification/README.adoc[Classification] examples using TensorFlow Lite starter model.
-* https://github.com/varigit/var-demos/blob/master/tflite/detection/README.adoc[Detection] examples using TensorFlow Lite starter model.
+* https://github.com/varigit/var-demos/blob/master/machine-learning-demos/tflite/classification/README.adoc[Classification] examples using TensorFlow Lite starter model.
+* https://github.com/varigit/var-demos/blob/master/machine-learning-demos/tflite/detection/README.adoc[Detection] examples using TensorFlow Lite starter model.
+* https://github.com/varigit/var-demos/tree/master/machine-learning-demos/tflite/realtime_application[Real Time Application] example using TensorFlow Lite starter model and Python GTK.
+* https://github.com/varigit/var-demos/tree/master/machine-learning-demos/tflite/mnist_digit[MNIST Digits] example to train and test model from Keras dataset.
+* https://github.com/varigit/var-demos/tree/master/machine-learning-demos/tflite/images_classification_train[Image Classification] example to train and test model from scratch.
+
+
