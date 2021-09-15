@@ -55,18 +55,18 @@ if __name__ == "__main__":
     train_images = train_images / 255.0
     test_images = test_images / 255.0
 
-    sgd = keras.optimizers.SGD(lr=0.01, decay=1e-6, momentum=0.04, nesterov=True)
-
     model = keras.Sequential([
-        keras.layers.Flatten(input_shape = ( maxsize_w, maxsize_h , 1)),
+        keras.layers.Flatten(input_shape = (maxsize_w, maxsize_h , 1)),
       	keras.layers.Dense(128, activation = tf.nn.sigmoid),
       	keras.layers.Dense(16, activation = tf.nn.sigmoid),
         keras.layers.Dense(2, activation = tf.nn.softmax)
     ])
 
-    model.compile(optimizer=sgd,
-                  loss='sparse_categorical_crossentropy',
-                  metrics=['accuracy'])
+    sgd = keras.optimizers.SGD(lr = 0.01, decay = 1e-6,
+                               momentum = 0.04, nesterov = True)
+    model.compile(optimizer = sgd,
+                  loss = 'sparse_categorical_crossentropy',
+                  metrics = ['accuracy'])
 
     model.fit(train_images, train_labels, epochs = 100)
 
