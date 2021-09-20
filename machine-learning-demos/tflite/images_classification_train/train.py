@@ -78,6 +78,6 @@ if __name__ == "__main__":
     converter = tf.lite.TFLiteConverter.from_keras_model(model)
     tflite_model = converter.convert()
 
-    f = open(f"{TFLITE_MODEL_DIR}/mnist.tflite", "wb")
+    f = open(f"{TFLITE_MODEL_DIR}/classification.tflite", "wb")
     f.write(tflite_model)
     f.close()

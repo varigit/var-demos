@@ -31,7 +31,7 @@ if __name__ == "__main__":
     input_image = np.array(input_image, dtype=np.float32) / 255.0
     input_image = np.expand_dims(input_image, axis=0)
 
-    interpreter = Interpreter(model_path=f"{TFLITE_MODEL_DIR}/mnist.tflite")
+    interpreter = Interpreter(model_path=f"{TFLITE_MODEL_DIR}/classification.tflite")
     interpreter.allocate_tensors()
 
     input_details = interpreter.get_input_details()
