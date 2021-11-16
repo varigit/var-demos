@@ -1,15 +1,18 @@
 # Copyright 2021 Variscite LTD
 # SPDX-License-Identifier: BSD-3-Clause
 
-import glob
 import os
-import re
 
 import numpy as np
 import PIL
 from PIL import Image
 import tensorflow as tf
 from tensorflow import keras
+
+DATASET_DIR = os.path.join(os.getcwd(), "dataset")
+DATASET_TRAIN_DIR = os.path.join(os.getcwd(), "dataset", "train")
+DATASET_TEST_DIR = os.path.join(os.getcwd(), "dataset", "test")
+TFLITE_MODEL_DIR = os.path.join(os.getcwd(), "model")
 
 def convert_to_8b_grayscale(image_path, maxsize):
 	image = Image.open(image_path).convert('L')
@@ -21,36 +24,38 @@ def convert_to_8b_grayscale(image_path, maxsize):
 	return np.asarray(image)
 
 def load_image_dataset(path_dir, maxsize, reshape_size):
-	images = []
-	labels = []
-	os.chdir(path_dir)
-	for file in glob.glob("*.jpg"):
-		img = convert_to_8b_grayscale(file, maxsize)
-		if re.match('orange.*', file):
-			images.append(img.reshape(reshape_size))
-			labels.append(0)
-		elif re.match('banana.*', file):
-			images.append(img.reshape(reshape_size))
-			labels.append(1)
-	return (np.asarray(images), np.asarray(labels))
+    images_list = []
+    labels_list = []
+    labels_dict = {}
 
-if __name__ == "__main__":
-    DATASET_DIR = os.path.join(os.getcwd(), "dataset")
-    DATASET_TEST_DIR = os.path.join(os.getcwd(), "dataset", "test")
-    TFLITE_MODEL_DIR = os.path.join(os.getcwd(), "model")
+    for root, directories, files in os.walk(path_dir, topdown=True):
+        for idx, directory in enumerate(directories):
+            labels_dict[directory] = idx
 
+        for file in files:
+            img = convert_to_8b_grayscale(os.path.join(root, file), maxsize)
+            images_list.append(img.reshape(reshape_size))
+            labels_list.append(labels_dict[os.path.basename(root)])
+
+    with open(f"{TFLITE_MODEL_DIR}/tflite.txt", "w") as labels_file:
+        for key, _ in labels_dict.items():
+            labels_file.write(str(key) + "\n")
+
+    return (np.asarray(images_list), np.asarray(labels_list))
+
+def main():
     maxsize = 50, 50
     maxsize_w, maxsize_h = maxsize
 
     (train_images, train_labels) = load_image_dataset(
-                   path_dir = DATASET_DIR,
-                   maxsize = maxsize,
-                   reshape_size = (maxsize_w, maxsize_h, 1))
+                                        path_dir=DATASET_TRAIN_DIR,
+                                        maxsize=maxsize,
+                                        reshape_size=(maxsize_w, maxsize_h, 1))
 
     (test_images, test_labels) = load_image_dataset(
-                   path_dir = DATASET_TEST_DIR,
-                   maxsize = maxsize,
-                   reshape_size = (maxsize_w, maxsize_h, 1))
+                                        path_dir=DATASET_TEST_DIR,
+                                        maxsize=maxsize,
+                                        reshape_size=(maxsize_w, maxsize_h, 1))
 
     train_images = train_images / 255.0
     test_images = test_images / 255.0
@@ -59,16 +64,20 @@ if __name__ == "__main__":
         keras.layers.Flatten(input_shape = (maxsize_w, maxsize_h , 1)),
       	keras.layers.Dense(128, activation = tf.nn.sigmoid),
       	keras.layers.Dense(16, activation = tf.nn.sigmoid),
-        keras.layers.Dense(2, activation = tf.nn.softmax)
+        keras.layers.Dense(max(train_labels) + 1, activation = tf.nn.softmax)
     ])
 
-    sgd = keras.optimizers.SGD(lr = 0.01, decay = 1e-6,
-                               momentum = 0.04, nesterov = True)
-    model.compile(optimizer = sgd,
-                  loss = 'sparse_categorical_crossentropy',
-                  metrics = ['accuracy'])
+    sgd = keras.optimizers.SGD(
+                           lr=0.01,
+                           decay=1e-6,
+                           momentum=0.04,
+                           nesterov=True)
+    model.compile(
+          optimizer=sgd,
+          loss='sparse_categorical_crossentropy',
+          metrics=['accuracy'])
 
-    model.fit(train_images, train_labels, epochs = 100)
+    model.fit(train_images, train_labels, epochs=100000)
 
     test_loss, test_acc = model.evaluate(test_images, test_labels)
 
@@ -78,6 +87,9 @@ if __name__ == "__main__":
     converter = tf.lite.TFLiteConverter.from_keras_model(model)
     tflite_model = converter.convert()
 
-    f = open(f"{TFLITE_MODEL_DIR}/classification.tflite", "wb")
+    f = open(f"{TFLITE_MODEL_DIR}/tflite_model.tflite", "wb")
     f.write(tflite_model)
     f.close()
+
+if __name__ == "__main__":
+    main()
