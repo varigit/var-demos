@@ -10,6 +10,20 @@ ifdef::env-github[]
 :source-highlighter: :rouge:
 endif::[]
 
+:VARISCITE_WIKI: https://variwiki.com/
+:PYVAR_PAGE: https://pyvar.dev/
+
+:TFLITE_CLASSIFICATION: https://github.com/varigit/var-demos/blob/master/machine-learning-demos/tflite/python/classification/
+:TFLITE_DETECTION: https://github.com/varigit/var-demos/blob/master/machine-learning-demos/tflite/python/detection/
+:TFLITE_HANDWRITTEN: https://github.com/varigit/var-demos/tree/master/machine-learning-demos/tflite/python/mnist_digit/
+:TFLITE_IMAGES_TRAINING_SCRATCH: https://github.com/varigit/var-demos/tree/master/machine-learning-demos/tflite/python/images_classification_train/
+:TFLITE_USER_INTERFACE: https://github.com/varigit/var-demos/tree/master/machine-learning-demos/tflite/python/realtime_application/
+:TFLITE_PYVAR: https://github.com/varigit/var-demos/tree/master/machine-learning-demos/tflite/python/pyvar_examples/
+
+:ARMNN_CLASSIFICATION: https://github.com/varigit/var-demos/tree/master/machine-learning-demos/armnn/python/classification/
+:ARMNN_DETECTION: https://github.com/varigit/var-demos/tree/master/machine-learning-demos/armnn/python/detection/
+:ARMNN_PYVAR: https://github.com/varigit/var-demos/tree/master/machine-learning-demos/armnn/python/pyvar_examples/
+
 = Machine Learning Samples
 
 This repository aims to provide simple source codes examples written in Python
@@ -71,17 +85,3 @@ The following examples use a starter mode from TensorFlow Lite and ONNX:
 The following examples use the PyVar API from Variscite:
 
 * {ARMNN_PYVAR}[PyVar Examples].
-
-:VARISCITE_WIKI: https://variwiki.com/
-:PYVAR_PAGE: https://pyvar.dev/
-
-:TFLITE_CLASSIFICATION: https://github.com/varigit/var-demos/blob/master/machine-learning-demos/tflite/python/classification/
-:TFLITE_DETECTION: https://github.com/varigit/var-demos/blob/master/machine-learning-demos/tflite/python/detection/
-:TFLITE_HANDWRITTEN: https://github.com/varigit/var-demos/tree/master/machine-learning-demos/tflite/python/mnist_digit/
-:TFLITE_IMAGES_TRAINING_SCRATCH: https://github.com/varigit/var-demos/tree/master/machine-learning-demos/tflite/python/images_classification_train/
-:TFLITE_USER_INTERFACE: https://github.com/varigit/var-demos/tree/master/machine-learning-demos/tflite/python/realtime_application/
-:TFLITE_PYVAR: https://github.com/varigit/var-demos/tree/master/machine-learning-demos/tflite/python/pyvar_examples/
-
-:ARMNN_CLASSIFICATION: https://github.com/varigit/var-demos/tree/master/machine-learning-demos/armnn/python/classification/
-:ARMNN_DETECTION: https://github.com/varigit/var-demos/tree/master/machine-learning-demos/armnn/python/detection/
-:ARMNN_PYVAR: https://github.com/varigit/var-demos/tree/master/machine-learning-demos/armnn/python/pyvar_examples/
