@@ -32,8 +32,8 @@ by the i.MX8 family.
 
 == Getting Started
 
-Before getting started make sure to have the latest {VARISCITE_WIKI}[Yocto Release]
-with **Wayland** + **X11** features built with the **fsl-image-qt5 image**; or,
+Before getting started make sure to have the latest Yocto Release with
+**Wayland** + **X11** features built with the **fsl-image-qt5 image**; or,
 if you want to use the **fsl-image-gui**, then add the following lines at your
 _local.conf_ file:
 
@@ -51,6 +51,8 @@ IMAGE_INSTALL_append_mx8mp = " \
 "
 ----
 
+* For more information, please visit the {VARISCITE_WIKI}[Variscite Wiki] page.
+
 == TensorFlow Lite
 
 === Python Examples
@@ -63,7 +65,7 @@ The following examples use a starter model from TensorFlow Lite:
 The following examples explain how to train your own model from scratch:
 
 * {TFLITE_HANDWRITTEN}[Handwritten Digits MNIST Dataset];
-* {TFLITE_IMAGES_TRAINING_SCRATCH}[Image Dlassification Custom Dataset].
+* {TFLITE_IMAGES_TRAINING_SCRATCH}[Image Classification Custom Dataset].
 
 The following example shows an user interface example written with Python GTK:
 
