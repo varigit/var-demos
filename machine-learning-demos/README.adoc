@@ -10,19 +10,78 @@ ifdef::env-github[]
 :source-highlighter: :rouge:
 endif::[]
 
-= Samples
+= Machine Learning Samples
 
-== Machine Learning
+This repository aims to provide simple source codes examples written in Python
+that you can easily deploy and test them on your System on Module (SoM) powered
+by the i.MX8 family.
 
-=== TensorFlow Lite
+== Getting Started
 
-* https://github.com/varigit/var-demos/blob/master/machine-learning-demos/tflite/classification/[Classification] examples using TensorFlow Lite starter model.
-* https://github.com/varigit/var-demos/blob/master/machine-learning-demos/tflite/detection/[Detection] examples using TensorFlow Lite starter model.
-* https://github.com/varigit/var-demos/tree/master/machine-learning-demos/tflite/realtime_application[Real Time Application] example using TensorFlow Lite starter model and Python GTK.
-* https://github.com/varigit/var-demos/tree/master/machine-learning-demos/tflite/mnist_digit[MNIST Digits] example to train and test model from Keras dataset.
-* https://github.com/varigit/var-demos/tree/master/machine-learning-demos/tflite/images_classification_train[Image Classification] example to train and test model from scratch.
+Before getting started make sure to have the latest {VARISCITE_WIKI}[Yocto Release]
+with **Wayland** + **X11** features built with the **fsl-image-qt5 image**; or,
+if you want to use the **fsl-image-gui**, then add the following lines at your
+_local.conf_ file:
 
-=== Pyarmnn
+[source,bash]
+----
+OPENCV_PKGS_imxgpu = " \
+   opencv-apps \
+   opencv-samples \
+   python3-opencv \
+"
 
-* https://github.com/varigit/var-demos/tree/master/machine-learning-demos/armnn/python/image_classification[Classification] examples using TensorFlow Lite and ONNX starter models.
-* https://github.com/varigit/var-demos/tree/master/machine-learning-demos/armnn/python/object_detection[Detection] examples using TensorFlow Lite starter model.
+IMAGE_INSTALL_append_mx8mp = " \
+    packagegroup-imx-ml \
+    ${OPENCV_PKGS} \
+"
+----
+
+== TensorFlow Lite
+
+=== Python Examples
+
+The following examples use a starter model from TensorFlow Lite:
+
+* {TFLITE_CLASSIFICATION}[Image Classification];
+* {TFLITE_DETECTION}[Object Detection].
+
+The following examples explain how to train your own model from scratch:
+
+* {TFLITE_HANDWRITTEN}[Handwritten Digits MNIST Dataset];
+* {TFLITE_IMAGES_TRAINING_SCRATCH}[Image Dlassification Custom Dataset].
+
+The following example shows an user interface example written with Python GTK:
+
+* {TFLITE_USER_INTERFACE}[Real time example using Python GTK].
+
+The following examples use the {PYVAR_PAGE}[PyVar API] from Variscite:
+
+* {TFLITE_PYVAR}[PyVar Examples].
+
+== Arm NN
+
+=== Python Examples
+
+The following examples use a starter mode from TensorFlow Lite and ONNX:
+
+* {ARMNN_CLASSIFICATION}[Image Classification];
+* {ARMNN_DETECTION}[Object Detection].
+
+The following examples use the PyVar API from Variscite:
+
+* {ARMNN_PYVAR}[PyVar Examples].
+
+:VARISCITE_WIKI: https://variwiki.com/
+:PYVAR_PAGE: https://pyvar.dev/
+
+:TFLITE_CLASSIFICATION: https://github.com/varigit/var-demos/blob/master/machine-learning-demos/tflite/python/classification/
+:TFLITE_DETECTION: https://github.com/varigit/var-demos/blob/master/machine-learning-demos/tflite/python/detection/
+:TFLITE_HANDWRITTEN: https://github.com/varigit/var-demos/tree/master/machine-learning-demos/tflite/python/mnist_digit/
+:TFLITE_IMAGES_TRAINING_SCRATCH: https://github.com/varigit/var-demos/tree/master/machine-learning-demos/tflite/python/images_classification_train/
+:TFLITE_USER_INTERFACE: https://github.com/varigit/var-demos/tree/master/machine-learning-demos/tflite/python/realtime_application/
+:TFLITE_PYVAR: https://github.com/varigit/var-demos/tree/master/machine-learning-demos/tflite/python/pyvar_examples/
+
+:ARMNN_CLASSIFICATION: https://github.com/varigit/var-demos/tree/master/machine-learning-demos/armnn/python/classification/
+:ARMNN_DETECTION: https://github.com/varigit/var-demos/tree/master/machine-learning-demos/armnn/python/detection/
+:ARMNN_PYVAR: https://github.com/varigit/var-demos/tree/master/machine-learning-demos/armnn/python/pyvar_examples/
