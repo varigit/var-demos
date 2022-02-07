@@ -20,7 +20,7 @@ train_images = 0
 
 def representative_dataset_gen():
   for input_value in tf.data.Dataset.from_tensor_slices(train_images).batch(1).take(100):
-    yield [input_value]
+    yield [np.asarray(input_value, dtype=np.float32)]
 
 def convert_to_8b_grayscale(image_path, maxsize):
 	image = Image.open(image_path).convert('L')
@@ -29,7 +29,7 @@ def convert_to_8b_grayscale(image_path, maxsize):
 		m_min_d = min(image_width, image_height)
 		image = image.crop((0, 0, m_min_d, m_min_d))
 	image.thumbnail(maxsize, PIL.Image.ANTIALIAS)
-	return np.asarray(image, dtype=np.float32)
+	return np.asarray(image, dtype=np.int8)
 
 def load_image_dataset(path_dir, maxsize, reshape_size):
     images_list = []
