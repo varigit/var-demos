@@ -8,15 +8,15 @@
 ## Copyright 2021 Project Nayuki (MIT License)
 ## https://www.nayuki.io/page/free-small-fft-in-multiple-languages
  
-CC:= /usr/bin/aarch64-linux-gnu-g++
-CFLAGS:= -Wall  -pedantic-errors -Wextra
+CXX ?= /usr/bin/aarch64-linux-gnu-g++
+CXXFLAGS := -Wall -pedantic-errors -Wextra -O3
 
-OUT_NAME:= fft
+OUT_NAME := fft
 
 all: main
 
 main: source/main.cpp source/fft.cpp source/fft.hpp Makefile
-		$(CC) $(CFLAGS) source/main.cpp source/fft.cpp -o $(OUT_NAME)
+		$(CXX) $(CXXFLAGS) source/main.cpp source/fft.cpp -o $(OUT_NAME)
 
 clean:
 		$(RM) $(OUT_NAME)
