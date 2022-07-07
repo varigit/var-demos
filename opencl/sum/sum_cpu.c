@@ -32,37 +32,37 @@
 
 int main(void)
 {
-	static volatile int a[ARRAY_SMALL_SIZE];
-	static volatile int b[ARRAY_SMALL_SIZE];
+    static volatile int a[ARRAY_SMALL_SIZE];
+    static volatile int b[ARRAY_SMALL_SIZE];
 
-	static int m[ARRAY_LARGE_SIZE];
-	static int n[ARRAY_LARGE_SIZE];
+    static int m[ARRAY_LARGE_SIZE];
+    static int n[ARRAY_LARGE_SIZE];
 
-	static volatile int z[ARRAY_LARGE_SIZE];
+    static volatile int z[ARRAY_LARGE_SIZE];
 
-	int i = 0;
-	clock_t start = 0;
-	clock_t end = 0;
-	double cpu_time = 0.0;
+    int i = 0;
+    clock_t start = 0;
+    clock_t end = 0;
+    double cpu_time = 0.0;
 
-	for (i = 0; i < ARRAY_SMALL_SIZE; i++) {
-		a[i] = 2 * i;
-		b[i] = 3 * i;
-	}
+    for (i = 0; i < ARRAY_SMALL_SIZE; i++) {
+        a[i] = 2 * i;
+        b[i] = 3 * i;
+    }
 
-	for (i = 0; i < ARRAY_LARGE_SIZE; i++) {
-		m[i] = a[i % ARRAY_SMALL_SIZE];
-		n[i] = b[i % ARRAY_SMALL_SIZE];
-	}
+    for (i = 0; i < ARRAY_LARGE_SIZE; i++) {
+        m[i] = a[i % ARRAY_SMALL_SIZE];
+        n[i] = b[i % ARRAY_SMALL_SIZE];
+    }
 
-	start = clock();
-	for (i = 0; i < ARRAY_LARGE_SIZE; i++) {
-		z[i] = m[i] + n[i];
-	}
-	end = clock();
+    start = clock();
+    for (i = 0; i < ARRAY_LARGE_SIZE; i++) {
+        z[i] = m[i] + n[i];
+    }
+    end = clock();
 
-	cpu_time = ((double)(end - start)) / CLOCKS_PER_SEC;
-	printf("[Execution Time] >> %f seconds.\n", cpu_time);
+    cpu_time = ((double)(end - start)) / CLOCKS_PER_SEC;
+    printf("[Execution Time] >> %f seconds.\n", cpu_time);
 
-	return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 }
