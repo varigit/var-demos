@@ -68,42 +68,42 @@ $ make
 
 ### Sum Array
 
-|                    | Module | Kernel  | CPU | CPU Freq | CPU Time (sec)  | GPU      | GPU Freq | GPU Time (sec) |
-|--------------------|--------|---------|-----|----------|-----------------|----------|----------|----------------|
-| VAR-SOM-MX8        |        |         |     |          |                 |          |          |                |
-| VAR-SOM-MX8X       |        |         |     |          |                 |          |          |                |
-| VAR-SOM-MX8M-NANO  |        |         |     |          |                 |          |          |                |
-| DART-MX8M          |        |         |     |          |                 |          |          |                |
-| DART-MX8M-MINI     |        |         |     |          |                 |          |          |                |
-| DART-MX8M-PLUS     | 1.1    | 5.10.72 | A53 | 1200000  | **0.010300**    | GC7000UL | 1000     | **0.002497**   |
+|                    | Kernel  | CPU@Frequency | Time (seconds)  | GPU@Frequency | Time (seconds) |
+|--------------------|---------|---------------|-----------------|---------------|----------------|
+| VAR-SOM-MX8        |         |               |                 |               |                |
+| VAR-SOM-MX8X       |         |               |                 |               |                |
+| VAR-SOM-MX8M-NANO  |         |               |                 |               |                |
+| DART-MX8M          |         |               |                 |               |                |
+| DART-MX8M-MINI     |         |               |                 |               |                |
+| DART-MX8M-PLUS     | 5.10.72 | A53@1200000   | **0.010300**    | GC7000UL@1000 | **0.002497**   |
 
 
 * [Sum Array Example](https://github.com/varigit/var-demos/tree/master/opencl/sum)
 
 ### Square Array
 
-|                    | Module | Kernel  | CPU | CPU Freq | CPU Time (sec)  | GPU      | GPU Freq | GPU Time (sec) |
-|--------------------|--------|---------|-----|----------|-----------------|----------|----------|----------------|
-| VAR-SOM-MX8        |        |         |     |          |                 |          |          |                |
-| VAR-SOM-MX8X       |        |         |     |          |                 |          |          |                |
-| VAR-SOM-MX8M-NANO  |        |         |     |          |                 |          |          |                |
-| DART-MX8M          |        |         |     |          |                 |          |          |                |
-| DART-MX8M-MINI     |        |         |     |          |                 |          |          |                |
-| DART-MX8M-PLUS     | 1.1    | 5.10.72 | A53 | 1200000  | **0.011486**    | GC7000UL | 1000     | **0.002488**   |
+|                    | Kernel  | CPU@Frequency | Time (seconds)  | GPU@Frequency | Time (seconds) |
+|--------------------|---------|---------------|-----------------|---------------|----------------|
+| VAR-SOM-MX8        |         |               |                 |               |                |
+| VAR-SOM-MX8X       |         |               |                 |               |                |
+| VAR-SOM-MX8M-NANO  |         |               |                 |               |                |
+| DART-MX8M          |         |               |                 |               |                |
+| DART-MX8M-MINI     |         |               |                 |               |                |
+| DART-MX8M-PLUS     | 5.10.72 | A53@1200000   | **0.011486**    | GC7000UL@1000 | **0.002488**   |
 
 
 * [Square Array Example](https://github.com/varigit/var-demos/tree/master/opencl/square)
 
 ### Fibonacci
 
-|                    | Module | Kernel  | CPU | CPU Freq | CPU Time (sec)  | GPU      | GPU Freq | GPU Time (sec) |
-|--------------------|--------|---------|-----|----------|-----------------|----------|----------|----------------|
-| VAR-SOM-MX8        |        |         |     |          |                 |          |          |                |
-| VAR-SOM-MX8X       |        |         |     |          |                 |          |          |                |
-| VAR-SOM-MX8M-NANO  |        |         |     |          |                 |          |          |                |
-| DART-MX8M          |        |         |     |          |                 |          |          |                |
-| DART-MX8M-MINI     |        |         |     |          |                 |          |          |                |
-| DART-MX8M-PLUS     | 1.1    | 5.10.72 | A53 | 1200000  | **0.000007**    | GC7000UL | 1000     | **0.000109**   |
+|                    | Kernel  | CPU@Frequency | Time (seconds)  | GPU@Frequency | Time (seconds) |
+|--------------------|---------|---------------|-----------------|---------------|----------------|
+| VAR-SOM-MX8        |         |               |                 |               |                |
+| VAR-SOM-MX8X       |         |               |                 |               |                |
+| VAR-SOM-MX8M-NANO  |         |               |                 |               |                |
+| DART-MX8M          |         |               |                 |               |                |
+| DART-MX8M-MINI     |         |               |                 |               |                |
+| DART-MX8M-PLUS     | 5.10.72 | A53@1200000   | **0.000007**    | GC7000UL@1000 | **0.000109**   |
 
 
 * [Fibonacci Example](https://github.com/varigit/var-demos/tree/master/opencl/fib)
