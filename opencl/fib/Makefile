@@ -29,10 +29,10 @@ DEL_FILE = rm -rf
 TARGET_PATH_LIB = $(ROOTFS_DIR)/usr/lib
 TARGET_PATH_INCLUDE = $(ROOTFS_DIR)/usr/include
 
-CPU_CFLAGS = -Wall -Wextra -std=c11 -O3
+CPU_CFLAGS = -Wall -Wextra -std=c11 -O0
 CPU_LFLAGS = 
 
-GPU_CFLAGS = -Wall -Wextra -std=c11 -O3 -fsigned-char -DEGL_API_FB -DGPU_TYPE_VIV -DGL_GLEXT_PROTOTYPES -DENABLE_GPU_RENDER_20 -I../include -I$(TARGET_PATH_INCLUDE)
+GPU_CFLAGS = -Wall -Wextra -std=c11 -O0 -fsigned-char -DEGL_API_FB -DGPU_TYPE_VIV -DGL_GLEXT_PROTOTYPES -DENABLE_GPU_RENDER_20 -I../include -I$(TARGET_PATH_INCLUDE)
 GPU_LFLAGS = -Wl,--library-path=$(TARGET_PATH_LIB),-rpath-link=$(TARGET_PATH_LIB) -lm -lglib-2.0 -lOpenCL -lCLC -ldl -lpthread
 
 CPU_OBJECTS = $(CPU_EXAMPLE).o
