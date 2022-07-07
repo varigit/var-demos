@@ -45,81 +45,81 @@ const char *OpenCLSource =
 
 int main(void)
 {
-	static volatile int a[ARRAY_SMALL_SIZE];
-	static volatile int b[ARRAY_SMALL_SIZE];
+    static volatile int a[ARRAY_SMALL_SIZE];
+    static volatile int b[ARRAY_SMALL_SIZE];
 
-	static int m[ARRAY_LARGE_SIZE];
-	static int n[ARRAY_LARGE_SIZE];
-	static volatile int z[ARRAY_LARGE_SIZE];
+    static int m[ARRAY_LARGE_SIZE];
+    static int n[ARRAY_LARGE_SIZE];
+    static volatile int z[ARRAY_LARGE_SIZE];
 
-	int i = 0;
-	cl_ulong start = 0, stop = 0;
+    int i = 0;
+    cl_ulong start = 0, stop = 0;
 
-	char device_message[100];
-	char driver_message[100];
+    char device_message[100];
+    char driver_message[100];
 
-	for (i = 0; i < ARRAY_SMALL_SIZE; i++) {
-		a[i] = 2 * i;
-		b[i] = 3 * i;
-	}
+    for (i = 0; i < ARRAY_SMALL_SIZE; i++) {
+        a[i] = 2 * i;
+        b[i] = 3 * i;
+    }
 
-	for (i = 0; i < ARRAY_LARGE_SIZE; i++) {
-		m[i] = a[i % ARRAY_SMALL_SIZE];
-		n[i] = b[i % ARRAY_SMALL_SIZE];
-	}
+    for (i = 0; i < ARRAY_LARGE_SIZE; i++) {
+        m[i] = a[i % ARRAY_SMALL_SIZE];
+        n[i] = b[i % ARRAY_SMALL_SIZE];
+    }
 
-	cl_device_id device_id = NULL;
-	cl_platform_id platform_id = NULL;
+    cl_device_id device_id = NULL;
+    cl_platform_id platform_id = NULL;
 
     clGetPlatformIDs(1, &platform_id, NULL);
-	clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_GPU, 1, &device_id , NULL);
+    clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_GPU, 1, &device_id , NULL);
 
-	clGetDeviceInfo(device_id , CL_DEVICE_NAME, sizeof(device_message), &device_message, NULL);
-	fprintf(stdout, "CL_DEVICE_NAME:\t\t%s\n", device_message);
+    clGetDeviceInfo(device_id , CL_DEVICE_NAME, sizeof(device_message), &device_message, NULL);
+    fprintf(stdout, "CL_DEVICE_NAME:\t\t%s\n", device_message);
 
-	clGetDeviceInfo(device_id, CL_DRIVER_VERSION, sizeof(driver_message), &driver_message, NULL);
-	fprintf(stdout, "CL_DRIVER_VERSION:\t%s\n\n", driver_message);
+    clGetDeviceInfo(device_id, CL_DRIVER_VERSION, sizeof(driver_message), &driver_message, NULL);
+    fprintf(stdout, "CL_DRIVER_VERSION:\t%s\n\n", driver_message);
 
-	cl_context gpu_context = clCreateContextFromType(0, CL_DEVICE_TYPE_GPU, NULL, NULL, NULL);
+    cl_context gpu_context = clCreateContextFromType(0, CL_DEVICE_TYPE_GPU, NULL, NULL, NULL);
 
-	cl_command_queue command_queue = clCreateCommandQueue(gpu_context, device_id, CL_QUEUE_PROFILING_ENABLE, NULL);
+    cl_command_queue command_queue = clCreateCommandQueue(gpu_context, device_id, CL_QUEUE_PROFILING_ENABLE, NULL);
 
-	cl_mem gpu_m = clCreateBuffer(gpu_context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(int) * ARRAY_LARGE_SIZE, m, NULL);
+    cl_mem gpu_m = clCreateBuffer(gpu_context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(int) * ARRAY_LARGE_SIZE, m, NULL);
 
-	cl_mem gpu_n = clCreateBuffer(gpu_context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(int) * ARRAY_LARGE_SIZE, n, NULL);
+    cl_mem gpu_n = clCreateBuffer(gpu_context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(int) * ARRAY_LARGE_SIZE, n, NULL);
 
-	cl_mem gpu_z = clCreateBuffer(gpu_context, CL_MEM_WRITE_ONLY, sizeof(int) * ARRAY_LARGE_SIZE, NULL, NULL);
+    cl_mem gpu_z = clCreateBuffer(gpu_context, CL_MEM_WRITE_ONLY, sizeof(int) * ARRAY_LARGE_SIZE, NULL, NULL);
 
-	cl_program square_array_example = clCreateProgramWithSource(gpu_context, 1, (const char **)&OpenCLSource, NULL , NULL);
+    cl_program square_array_example = clCreateProgramWithSource(gpu_context, 1, (const char **)&OpenCLSource, NULL , NULL);
 
-	clBuildProgram(square_array_example, 0, NULL, NULL, NULL, NULL);
+    clBuildProgram(square_array_example, 0, NULL, NULL, NULL, NULL);
 
-	cl_kernel square_array_example_kernel = clCreateKernel(square_array_example, "square", NULL);
+    cl_kernel square_array_example_kernel = clCreateKernel(square_array_example, "square", NULL);
 
-	clSetKernelArg(square_array_example_kernel, 0, sizeof(cl_mem), (void*)&gpu_z);
-	clSetKernelArg(square_array_example_kernel, 1, sizeof(cl_mem), (void*)&gpu_m);
-	clSetKernelArg(square_array_example_kernel, 2, sizeof(cl_mem), (void*)&gpu_n);
+    clSetKernelArg(square_array_example_kernel, 0, sizeof(cl_mem), (void*)&gpu_z);
+    clSetKernelArg(square_array_example_kernel, 1, sizeof(cl_mem), (void*)&gpu_m);
+    clSetKernelArg(square_array_example_kernel, 2, sizeof(cl_mem), (void*)&gpu_n);
 
-	cl_event event = clCreateUserEvent(gpu_context, NULL);
+    cl_event event = clCreateUserEvent(gpu_context, NULL);
 
-	size_t work_size[1] = {ARRAY_LARGE_SIZE};
-	clEnqueueNDRangeKernel(command_queue, square_array_example_kernel, 1, NULL, work_size, NULL, 0, NULL, &event);
-	clEnqueueReadBuffer(command_queue, gpu_z, CL_TRUE, 0, ARRAY_LARGE_SIZE * sizeof(int), z, 0, NULL, NULL);
-	clFlush(command_queue);
+    size_t work_size[1] = {ARRAY_LARGE_SIZE};
+    clEnqueueNDRangeKernel(command_queue, square_array_example_kernel, 1, NULL, work_size, NULL, 0, NULL, &event);
+    clEnqueueReadBuffer(command_queue, gpu_z, CL_TRUE, 0, ARRAY_LARGE_SIZE * sizeof(int), z, 0, NULL, NULL);
+    clFlush(command_queue);
 
-	clReleaseKernel(square_array_example_kernel);
-	clReleaseProgram(square_array_example);
-	clReleaseCommandQueue(command_queue);
-	clReleaseContext(gpu_context);
-	clReleaseMemObject(gpu_m);
-	clReleaseMemObject(gpu_n);
-	clReleaseMemObject(gpu_z);
-	clWaitForEvents(1, &event);
+    clReleaseKernel(square_array_example_kernel);
+    clReleaseProgram(square_array_example);
+    clReleaseCommandQueue(command_queue);
+    clReleaseContext(gpu_context);
+    clReleaseMemObject(gpu_m);
+    clReleaseMemObject(gpu_n);
+    clReleaseMemObject(gpu_z);
+    clWaitForEvents(1, &event);
 
-	clGetEventProfilingInfo(event, CL_PROFILING_COMMAND_START, sizeof(cl_ulong), &start, NULL);
-	clGetEventProfilingInfo(event, CL_PROFILING_COMMAND_END, sizeof(cl_ulong), &stop, NULL);
+    clGetEventProfilingInfo(event, CL_PROFILING_COMMAND_START, sizeof(cl_ulong), &start, NULL);
+    clGetEventProfilingInfo(event, CL_PROFILING_COMMAND_END, sizeof(cl_ulong), &stop, NULL);
 
-	printf("[Execution Time] >> %lf seconds.\n", (stop - start) / 1000000000.0);
+    printf("[Execution Time] >> %lf seconds.\n", (stop - start) / 1000000000.0);
 
-	return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 }
