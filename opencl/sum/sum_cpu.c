@@ -27,39 +27,35 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define ARRAY_SMALL_SIZE 80
-#define ARRAY_LARGE_SIZE 600000
+#define ARRAY_SIZE 600000
 
 int main(void)
 {
-    static volatile int a[ARRAY_SMALL_SIZE];
-    static volatile int b[ARRAY_SMALL_SIZE];
+    static int a[ARRAY_SIZE];
+    static int b[ARRAY_SIZE];
 
-    static int m[ARRAY_LARGE_SIZE];
-    static int n[ARRAY_LARGE_SIZE];
-
-    static volatile int z[ARRAY_LARGE_SIZE];
+    static int z[ARRAY_SIZE];
+    static volatile int v[ARRAY_SIZE];
 
     int i = 0;
     clock_t start = 0;
     clock_t end = 0;
     double cpu_time = 0.0;
 
-    for (i = 0; i < ARRAY_SMALL_SIZE; i++) {
+    for (i = 0; i < ARRAY_SIZE; i++) {
         a[i] = 2 * i;
         b[i] = 3 * i;
     }
 
-    for (i = 0; i < ARRAY_LARGE_SIZE; i++) {
-        m[i] = a[i % ARRAY_SMALL_SIZE];
-        n[i] = b[i % ARRAY_SMALL_SIZE];
-    }
-
     start = clock();
-    for (i = 0; i < ARRAY_LARGE_SIZE; i++) {
-        z[i] = m[i] + n[i];
+    for (i = 0; i < ARRAY_SIZE; i++) {
+        z[i] = a[i] + b[i];
     }
     end = clock();
+
+    for (i = 0; i < ARRAY_SIZE; i++) {
+        v[i] = z[i];
+    }
 
     cpu_time = ((double)(end - start)) / CLOCKS_PER_SEC;
     printf("[Execution Time] >> %f seconds.\n", cpu_time);

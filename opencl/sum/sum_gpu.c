@@ -33,8 +33,7 @@
 #include <time.h>
 #include <CL/cl.h>
 
-#define ARRAY_SMALL_SIZE 80
-#define ARRAY_LARGE_SIZE 600000
+#define ARRAY_SIZE 600000
 
 const char *OpenCLSource = \
     "__kernel void sum(__global int* c, __global int* a,__global int* b)\n"
@@ -45,12 +44,10 @@ const char *OpenCLSource = \
 
 int main(void)
 {
-    static volatile int a[ARRAY_SMALL_SIZE];
-    static volatile int b[ARRAY_SMALL_SIZE];
+    static int a[ARRAY_SIZE];
+    static int b[ARRAY_SIZE];
 
-    static int m[ARRAY_LARGE_SIZE];
-    static int n[ARRAY_LARGE_SIZE];
-    static volatile int z[ARRAY_LARGE_SIZE];
+    static int z[ARRAY_SIZE];
 
     int i = 0;
     cl_ulong start = 0, stop = 0;
@@ -58,14 +55,9 @@ int main(void)
     char device_message[100];
     char driver_message[100];
 
-    for (i = 0; i < ARRAY_SMALL_SIZE; i++) {
+    for (i = 0; i < ARRAY_SIZE; i++) {
         a[i] = 2 * i;
         b[i] = 3 * i;
-    }
-
-    for (i = 0; i < ARRAY_LARGE_SIZE; i++) {
-        m[i] = a[i % ARRAY_SMALL_SIZE];
-        n[i] = b[i % ARRAY_SMALL_SIZE];
     }
 
     cl_device_id device_id = NULL;
@@ -84,11 +76,11 @@ int main(void)
 
     cl_command_queue command_queue = clCreateCommandQueue(gpu_context, device_id, CL_QUEUE_PROFILING_ENABLE, NULL);
 
-    cl_mem gpu_m = clCreateBuffer(gpu_context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(int) * ARRAY_LARGE_SIZE, m, NULL);
+    cl_mem gpu_a = clCreateBuffer(gpu_context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(int) * ARRAY_SIZE, a, NULL);
 
-    cl_mem gpu_n = clCreateBuffer(gpu_context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(int) * ARRAY_LARGE_SIZE, n, NULL);
+    cl_mem gpu_b = clCreateBuffer(gpu_context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(int) * ARRAY_SIZE, b, NULL);
 
-    cl_mem gpu_z = clCreateBuffer(gpu_context, CL_MEM_WRITE_ONLY, sizeof(int) * ARRAY_LARGE_SIZE, NULL, NULL);
+    cl_mem gpu_z = clCreateBuffer(gpu_context, CL_MEM_WRITE_ONLY, sizeof(int) * ARRAY_SIZE, NULL, NULL);
 
     cl_program sum_array_example = clCreateProgramWithSource(gpu_context, 1, (const char **)&OpenCLSource, NULL , NULL);
 
@@ -97,22 +89,22 @@ int main(void)
     cl_kernel sum_array_example_kernel = clCreateKernel(sum_array_example, "sum", NULL);
 
     clSetKernelArg(sum_array_example_kernel, 0, sizeof(cl_mem), (void*)&gpu_z);
-    clSetKernelArg(sum_array_example_kernel, 1, sizeof(cl_mem), (void*)&gpu_m);
-    clSetKernelArg(sum_array_example_kernel, 2, sizeof(cl_mem), (void*)&gpu_n);
+    clSetKernelArg(sum_array_example_kernel, 1, sizeof(cl_mem), (void*)&gpu_a);
+    clSetKernelArg(sum_array_example_kernel, 2, sizeof(cl_mem), (void*)&gpu_b);
 
     cl_event event = clCreateUserEvent(gpu_context, NULL);
 
-    size_t work_size[1] = {ARRAY_LARGE_SIZE};
+    size_t work_size[1] = {ARRAY_SIZE};
     clEnqueueNDRangeKernel(command_queue, sum_array_example_kernel, 1, NULL, work_size, NULL, 0, NULL, &event);
-    clEnqueueReadBuffer(command_queue, gpu_z, CL_TRUE, 0, ARRAY_LARGE_SIZE * sizeof(int), z, 0, NULL, NULL);
+    clEnqueueReadBuffer(command_queue, gpu_z, CL_TRUE, 0, ARRAY_SIZE * sizeof(int), z, 0, NULL, NULL);
     clFlush(command_queue);
 
     clReleaseKernel(sum_array_example_kernel);
     clReleaseProgram(sum_array_example);
     clReleaseCommandQueue(command_queue);
     clReleaseContext(gpu_context);
-    clReleaseMemObject(gpu_m);
-    clReleaseMemObject(gpu_n);
+    clReleaseMemObject(gpu_a);
+    clReleaseMemObject(gpu_b);
     clReleaseMemObject(gpu_z);
     clWaitForEvents(1, &event);
 
