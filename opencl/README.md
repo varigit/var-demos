@@ -21,7 +21,8 @@ which are much simpler than a regular CPU, and execute the exact instructions in
 parallel but operate on different data, and it also does not make branch
 predictions.
 
-The OpenCL (cross-platform, parallel programming of modern processors) is defined by Khronos Group:
+The OpenCL (cross-platform, parallel programming of modern processors) is
+defined by Khronos Group:
 
 * [https://www.khronos.org/opencl/](https://www.khronos.org/opencl/).
 
@@ -29,7 +30,8 @@ The OpenCL (cross-platform, parallel programming of modern processors) is define
 
 To build the examples, please follow the next instructions.
 
-1. Build a Yocto toolchain by following the [Variscite Wiki](https://variwiki.com/) instructions.
+1. Build a Yocto toolchain by following the
+[Variscite Wiki](https://variwiki.com/) instructions.
 
 2. Export the toolchain:
 
@@ -54,18 +56,43 @@ Output:
 $ export ROOTFS_DIR=/opt/fslc-xwayland/<version>/sysroots/cortexa53-crypto-fslc-linux
 ```
 
-## Examples
-
-* [Sum Array](https://github.com/varigit/var-demos/tree/master/opencl/sum)
-* [Square Array](https://github.com/varigit/var-demos/tree/master/opencl/square)
-* [Fibonacci](https://github.com/varigit/var-demos/tree/master/opencl/fib)
-
-1. To compile the example, just run the following command:
+5. To compile the exampleS, just run the following command in the respective folder:
 
 ```console
 $ make
 ```
-2. Copy the examples to the module, and execute them.
+6. Copy the examples to the module, and execute them.
 
+
+## Examples
+
+### Sum Array
+
+|                    | DART-MX8M-PLUS | SPEAR-MX8 |
+|--------------------|----------------|-----------|
+| CPU Time (seconds) | 0.010300       |   -       |
+| GPU Time (seconds) | 0.002497       |   -       |
+
+* [Sum Array Example](https://github.com/varigit/var-demos/tree/master/opencl/sum)
+
+### Square Array
+
+|                    | DART-MX8M-PLUS | SPEAR-MX8 |
+|--------------------|----------------|-----------|
+| CPU Time (seconds) | 0.011486       |   -       |
+| GPU Time (seconds) | 0.002488       |   -       |
+
+* [Square Array Example](https://github.com/varigit/var-demos/tree/master/opencl/square)
+
+### Fibonacci
+
+|                    |  n  | DART-MX8M-PLUS | SPEAR-MX8 |
+|--------------------|-----|----------------|-----------|
+| CPU Time (seconds) | 30  | 0.000006       |   -       |
+| CPU Time (seconds) | 90  | 0.000007       |   -       |
+| GPU Time (seconds) | 30  | 0.000085       |   -       |
+| GPU Time (seconds) | 92  | 0.000109       |   -       |
+
+* [Fibonacci Example](https://github.com/varigit/var-demos/tree/master/opencl/fib)
 
 
