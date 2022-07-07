@@ -33,11 +33,11 @@
 #include <CL/opencl.h>
 
 char* OpenCLSource = \
-    "float _fib(float n) {                  \n" \
+    "long _fib(long n) {                  \n" \
     "  if(n <= 0) return 0;                 \n" \
     "  if(n > 0 && n < 3) return 1;         \n" \
-    "  float r = 0, n1 = 1, n2 = 1;         \n" \
-    "  for (int i = 2; i < n; i++) {        \n" \
+    "  long r = 0, n1 = 1, n2 = 1;         \n" \
+    "  for (long i = 2; i < n; i++) {        \n" \
     "    r = n1 + n2;                       \n" \
     "    n1 = n2;                           \n" \
     "    n2 = r;                            \n" \
@@ -46,8 +46,8 @@ char* OpenCLSource = \
     "}                                      \n" \
     "                                       \n" \
     "kernel void fib(                       \n" \
-    "    global const float *a,             \n" \
-    "    global float *r) {                 \n" \
+    "    global const long *a,             \n" \
+    "    global long *r) {                 \n" \
     "  unsigned int id = get_global_id(0);  \n" \
     "  r[id] = _fib(a[id]);                 \n" \
     "}                                      \n" \
@@ -92,8 +92,8 @@ int main(int argc, char *argv[])
 
     cl_kernel kernel = clCreateKernel(program, "fib", NULL);
 
-    float a[1] = { (float)n };
-    float r[1] = { 0 };
+    long a[1] = { (long)n };
+    long r[1] = { 0 };
 
     cl_mem ma = clCreateBuffer(gpu_context, CL_MEM_READ_WRITE, sizeof(a), NULL, NULL);
 

@@ -27,17 +27,26 @@
 #include <stdlib.h>
 #include <time.h>
 
-int fib(n)
+
+long fib(long n)
 {
-    if (n <= 1)
+    if (n <= 0)
+        return 0;
+    if (n > 0 && n < 3)
         return 1;
-    else
-        return fib(n-1) + fib(n-2);
+
+    long r = 0, n1 = 1, n2 = 1;
+    for (long i = 2; i < n; i++) {
+        r = n1 + n2;
+        n1 = n2;
+        n2 = r;
+    }
+    return r;
 }
 
 int main(int argc, char *argv[])
 {
-    int n, r;
+    long n, r;
     clock_t start = 0;
     clock_t end = 0;
     double cpu_time = 0.0;
@@ -50,11 +59,11 @@ int main(int argc, char *argv[])
     n = atoi(argv[1]);
 
     start = clock();
-    r = fib(n -1);
+    r = fib(n);
     end = clock();
 
     cpu_time = ((double)(end - start)) / CLOCKS_PER_SEC;
-    printf("[Result] >> %d\n", r);
+    printf("[Result] >> %ld\n", r);
     printf("[Execution Time] >> %lf seconds.\n", cpu_time);
 
     return EXIT_SUCCESS;
