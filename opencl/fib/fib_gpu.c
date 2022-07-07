@@ -56,28 +56,28 @@ char* OpenCLSource = \
 int main(int argc, char *argv[])
 {
     if (argc != 2) {
-	    fprintf(stderr, "usage of %s: [number]\n", argv[0]);
-	    return EXIT_FAILURE;
+        fprintf(stderr, "usage of %s: [number]\n", argv[0]);
+        return EXIT_FAILURE;
     }
 
     int n = atoi(argv[1]);
     size_t source_size = strlen(OpenCLSource);
 
-	char device_message[100];
-	char driver_message[100];
+    char device_message[100];
+    char driver_message[100];
 
-	cl_platform_id platform_id = NULL;
+    cl_platform_id platform_id = NULL;
 
     clGetPlatformIDs(1, &platform_id, NULL);
 
     cl_device_id device_id = NULL;
     clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_GPU, 1, &device_id, NULL);
 
-	clGetDeviceInfo(device_id , CL_DEVICE_NAME, sizeof(device_message), &device_message, NULL);
-	fprintf(stdout, "CL_DEVICE_NAME:\t\t%s\n", device_message);
+    clGetDeviceInfo(device_id , CL_DEVICE_NAME, sizeof(device_message), &device_message, NULL);
+    fprintf(stdout, "CL_DEVICE_NAME:\t\t%s\n", device_message);
 
-	clGetDeviceInfo(device_id, CL_DRIVER_VERSION, sizeof(driver_message), &driver_message, NULL);
-	fprintf(stdout, "CL_DRIVER_VERSION:\t%s\n\n", driver_message);
+    clGetDeviceInfo(device_id, CL_DRIVER_VERSION, sizeof(driver_message), &driver_message, NULL);
+    fprintf(stdout, "CL_DRIVER_VERSION:\t%s\n\n", driver_message);
 
     cl_context gpu_context = clCreateContextFromType(0, CL_DEVICE_TYPE_GPU, NULL, NULL, NULL);
 

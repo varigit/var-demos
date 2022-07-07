@@ -38,13 +38,13 @@ int fib(n)
 int main(int argc, char *argv[])
 {
     int n, r;
-   	clock_t start = 0;
-   	clock_t end = 0;
-   	double cpu_time = 0.0;
+    clock_t start = 0;
+    clock_t end = 0;
+    double cpu_time = 0.0;
 
     if (argc != 2) {
-	    fprintf(stderr, "Usage of %s: [number]\n", argv[0]);
-	    return EXIT_FAILURE;
+        fprintf(stderr, "Usage of %s: [number]\n", argv[0]);
+        return EXIT_FAILURE;
     }
 
     n = atoi(argv[1]);
@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
     r = fib(n -1);
     end = clock();
 
-    cpu_time = ((double)(end -start)) / CLOCKS_PER_SEC;
+    cpu_time = ((double)(end - start)) / CLOCKS_PER_SEC;
     printf("[Result] >> %d\n", r);
     printf("[Execution Time] >> %lf seconds.\n", cpu_time);
 
