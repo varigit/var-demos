@@ -27,44 +27,40 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define N 512
+#define DIM 512
 
-int main(void)
-{
-    static float a[N][N];
-    static float b[N][N];
-    static float z[N][N];
+int main(void) {
+    static float a[DIM][DIM];
+    static float b[DIM][DIM];
+    static float z[DIM][DIM];
 
-    static volatile float v;
-
-    int i, j, q;
+    int i, j, k;
     clock_t start = 0;
     clock_t end = 0;
     double cpu_time = 0.0;
 
-    for (j = 0; j < N; j++) {
-	    for (i = 0; i < N; i++) {
-		    a[j][i] = 2 * i - 5 * j;
-		    b[j][i] = 3 * i + 10 * j;
+    for (i = 0; i < DIM; i++)
+	    for (j = 0; j < DIM; j++) {
+		    a[i][j] = 2 * j - 5 * i;
+		    b[i][j] = 3 * j + 10 * i;
+		    z[i][j] = 0;
 	    }
-    }
 
     start = clock();
-    for (j = 0; j < N; j++) {
-	    for (i = 0; i < N; i++) {
-		    z[j][i] = 0;
-		    for (q = 0; q < N; q++) {
-			    z[j][i] += a[j][q]*b[q][i];
-		    }
-	    }
-    }
+    for (i = 0; i < DIM; i++)
+	    for (j = 0; j < DIM; j++)
+		    for (k = 0; k < DIM; k++)
+			    z[i][j] += a[i][k]*b[k][j];
+
     end = clock();
 
-    for (j = 0; j < N; j++) {
-	    for (i = 0; i < N; i++) {
-		v = z[j][i];
-	    }
-    }
+    /* Print the resulting matrix
+    for (i = 0; i < DIM; i++) {
+        for (j = 0; j < DIM; j++)
+            printf("%f ", z[i][j]);
+
+        printf("\n");
+    } */
 
     cpu_time = ((double)(end - start)) / CLOCKS_PER_SEC;
     printf("[Execution Time] >> %f seconds.\n", cpu_time);

@@ -33,40 +33,38 @@
 #include <time.h>
 #include <CL/cl.h>
 
-#define N 512
+#define DIM 512
 
 const char *OpenCLSource = \
-    "__kernel void matrix_multiplication(__global int* z, __global int* a,__global int* b)\n"
-    "{                                                                                    \n"
-    "   unsigned int id = get_global_id(0);                                               \n"
-    "   int i = 0, j = 0, q = 0;                                                          \n"
-    "   for (j = 0; j < id; j++) {                                                         \n"
-    "       for (i = 0; i < id; i++) {                                                     \n"
-    "           z[j][i] = 0;                                                              \n"
-    "           for (q = 0; q < N; q++) {                                                 \n"
-    "               z[j][i] += a[j][q]*b[q][i];                                           \n"
-    "           }                                                                         \n"
-    "        }                                                                            \n"
-    "    }                                                                                \n"
-    "}                                                                                    \n";
+    "__kernel void matrix_multiplication(__global float* z, __global float* a,                 \n"
+    "                                    __global float* b, int dim) {                         \n"
+    "    int id_x = get_global_id(0);                                                          \n"
+    "    int id_y = get_global_id(1);                                                          \n"
+    "    float sum = 0.0;                                                                      \n"
+    "                                                                                          \n"
+    "    for (int i = 0; i < dim; i++)                                                         \n"
+    "        sum += a[dim * id_x + i] * b[dim * i +id_y];                                      \n"
+    "                                                                                          \n"
+    "    z[dim * id_x + id_y] = sum;                                                           \n"
+    "}                                                                                         \n";
+
 
 int main(void)
 {
-    static float a[N][N];
-    static float b[N][N];
-    static float z[N][N];
-
+    float a[DIM * DIM];
+    float b[DIM * DIM];
+    float z[DIM * DIM];
+    int dim = DIM;
     int i, j;
 
     char device_message[100];
     char driver_message[100];
 
-    for (j = 0; j < N; j++) {
-	    for (i = 0; i < N; i++) {
-		    a[j][i] = 2 * i - 5 * j;
-		    b[j][i] = 3 * i + 10 * j;
+    for (i = 0; i < DIM; i++)
+	    for (j = 0; j < DIM; j++) {
+		    a[DIM * i + j] = 2 * j - 5 * i;
+		    b[DIM * i + j] = 3 * j + 10 * i;
 	    }
-    }
 
     cl_device_id device_id = NULL;
     cl_platform_id platform_id = NULL;
@@ -81,30 +79,26 @@ int main(void)
     fprintf(stdout, "CL_DRIVER_VERSION:\t%s\n\n", driver_message);
 
     cl_context gpu_context = clCreateContextFromType(0, CL_DEVICE_TYPE_GPU, NULL, NULL, NULL);
-
     cl_command_queue command_queue = clCreateCommandQueue(gpu_context, device_id, CL_QUEUE_PROFILING_ENABLE, NULL);
-
-    cl_mem gpu_a = clCreateBuffer(gpu_context, CL_MEM_WRITE_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(a), a, NULL);
-
-    cl_mem gpu_b = clCreateBuffer(gpu_context, CL_MEM_WRITE_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(b), b, NULL);
-
-    cl_mem gpu_z = clCreateBuffer(gpu_context, CL_MEM_WRITE_ONLY, sizeof(z), NULL, NULL);
-
     cl_program matrix_multiplication = clCreateProgramWithSource(gpu_context, 1, (const char **)&OpenCLSource, NULL , NULL);
-
     clBuildProgram(matrix_multiplication, 0, NULL, NULL, NULL, NULL);
+    cl_kernel kernel = clCreateKernel(matrix_multiplication, "matrix_multiplication", NULL);
 
-    cl_kernel kernel = clCreateKernel(matrix_multiplication, "matrix_calculation", NULL);
+    cl_mem gpu_a = clCreateBuffer(gpu_context, CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR, sizeof(float) * DIM * DIM, a, NULL);
+    cl_mem gpu_b = clCreateBuffer(gpu_context, CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR, sizeof(float) * DIM * DIM, b, NULL);
+    cl_mem gpu_z = clCreateBuffer(gpu_context, CL_MEM_READ_WRITE, sizeof(float) * DIM * DIM, NULL, NULL);
 
     clSetKernelArg(kernel, 0, sizeof(cl_mem), (void*)&gpu_z);
     clSetKernelArg(kernel, 1, sizeof(cl_mem), (void*)&gpu_a);
     clSetKernelArg(kernel, 2, sizeof(cl_mem), (void*)&gpu_b);
+    clSetKernelArg(kernel, 3, sizeof(int), (void*)&dim);
 
     cl_event event = clCreateUserEvent(gpu_context, NULL);
 
-    size_t work[] = { N };
-    clEnqueueNDRangeKernel(command_queue, kernel, 1, NULL, work, NULL, 0, NULL, &event);
-    clEnqueueReadBuffer(command_queue, gpu_z, CL_TRUE, 0, sizeof(z), z, 0, NULL, NULL);
+    size_t work[] = { DIM, DIM };
+    clEnqueueNDRangeKernel(command_queue, kernel, 2, NULL, work, NULL, 0, NULL, &event);
+    clEnqueueReadBuffer(command_queue, gpu_z, CL_TRUE, 0, sizeof(float) * DIM * DIM, z, 0, NULL, NULL);
+
     clFlush(command_queue);
 
     clReleaseKernel(kernel);
@@ -121,6 +115,14 @@ int main(void)
 
     clGetEventProfilingInfo(event, CL_PROFILING_COMMAND_START, sizeof(cl_ulong), &start, NULL);
     clGetEventProfilingInfo(event, CL_PROFILING_COMMAND_END, sizeof(cl_ulong), &stop, NULL);
+
+    /* Print the resulting matrix
+    for (i = 0; i < DIM; i++) {
+        for (j = 0; j < DIM; j++)
+            printf("%f ", z[DIM * i + j]);
+
+        printf("\n");
+    } */
 
     printf("[Execution Time] >> %lf seconds.\n", (stop - start) / 1000000000.0);
 
