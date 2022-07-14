@@ -81,7 +81,7 @@ $ make
 |                        | Kernel  | CPU@Frequency | Time (seconds)  | GPU@Frequency  | Time (seconds) |
 |------------------------|---------|---------------|-----------------|----------------|----------------|
 | **VAR-SOM-MX8**        | 5.10.72 | A72@600       | **0.006551**    | GC7000XSVX@624 | **0.000887**   |
-| **VAR-SOM-MX8X**       |         |               |                 |                |                |
+| **VAR-SOM-MX8X**       | 5.10.72 | A35@900       | **0.018827**    | GC7000L@850    | **0.001989**   |
 | **VAR-SOM-MX8M-NANO**  |         |               |                 |                |                |
 | **DART-MX8M**          |         |               |                 |                |                |
 | **DART-MX8M-MINI**     |         |               |                 |                |                |
@@ -95,11 +95,54 @@ $ make
 |                        | Kernel  | CPU@Frequency | Time (seconds)  | GPU@Frequency  | Time (seconds) |
 |------------------------|---------|---------------|-----------------|----------------|----------------|
 | **VAR-SOM-MX8**        | 5.10.72 | A72@600       | **0.007331**    | GC7000XSVX@624 | **0.000913**   |
-| **VAR-SOM-MX8X**       |         |               |                 |                |                |
+| **VAR-SOM-MX8X**       | 5.10.72 | A35@900       | **0.021287**    | GC7000L@850    | **0.001989**   |
 | **VAR-SOM-MX8M-NANO**  |         |               |                 |                |                |
 | **DART-MX8M**          |         |               |                 |                |                |
 | **DART-MX8M-MINI**     |         |               |                 |                |                |
 | **DART-MX8M-PLUS**     | 5.10.72 | A53@1200      | **0.011486**    | GC7000UL@1000  | **0.002504**   |
+
+
+### Saxpy (Single-Precision A·X Plus Y)
+
+* [Saxpy Example](https://github.com/varigit/var-demos/tree/master/opencl/saxpy)
+
+|                        | Kernel  | CPU@Frequency | Time (seconds)  | GPU@Frequency  | Time (seconds) |
+|------------------------|---------|---------------|-----------------|----------------|----------------|
+| **VAR-SOM-MX8**        | 5.10.72 | A72@600       | **0.521095**    | GC7000XSVX@624 | **0.056880**   |
+| **VAR-SOM-MX8X**       | 5.10.72 | A35@900       | **2.004977**    | GC7000L@850    | **0.190855**   |
+| **VAR-SOM-MX8M-NANO**  |         |               |                 |                |                |
+| **DART-MX8M**          |         |               |                 |                |                |
+| **DART-MX8M-MINI**     |         |               |                 |                |                |
+| **DART-MX8M-PLUS**     | 5.10.72 | A53@1200      | **1.063134**    | GC7000UL@1000  | **0.245928**   |
+
+
+### Matrices Multiplication
+
+* [Matrices Multiplication Example](https://github.com/varigit/var-demos/tree/master/opencl/matrix)
+
+|                        | Kernel  | CPU@Frequency | Time (seconds)  | GPU@Frequency  | Time (seconds) |
+|------------------------|---------|---------------|-----------------|----------------|----------------|
+| **VAR-SOM-MX8**        | 5.10.72 | A72@600       | **3.073512**    | GC7000XSVX@624 | **0.663791**   |
+| **VAR-SOM-MX8X**       | 5.10.72 | A35@900       | **28.622618**   | GC7000L@850    | **1.259885**   |
+| **VAR-SOM-MX8M-NANO**  |         |               |                 |                |                |
+| **DART-MX8M**          |         |               |                 |                |                |
+| **DART-MX8M-MINI**     |         |               |                 |                |                |
+| **DART-MX8M-PLUS**     | 5.10.72 | A53@1200      | **15.803927**   | GC7000UL@1000  | **1.695544**   |
+
+
+### Binary Search
+
+* [Binary Search Example](https://github.com/varigit/var-demos/tree/master/opencl/binary_search)
+
+|                        | Kernel  | CPU@Frequency | Time (seconds)  | GPU@Frequency  | Time (seconds) |
+|------------------------|---------|---------------|-----------------|----------------|----------------|
+| **VAR-SOM-MX8**        | 5.10.72 | A72@600       | **0.000007**    | GC7000XSVX@624 | **0.000289**   |
+| **VAR-SOM-MX8X**       | 5.10.72 | A35@900       | **0.000015**    | GC7000L@850    | **0.000176**   |
+| **VAR-SOM-MX8M-NANO**  |         |               |                 |                |                |
+| **DART-MX8M**          |         |               |                 |                |                |
+| **DART-MX8M-MINI**     |         |               |                 |                |                |
+| **DART-MX8M-PLUS**     | 5.10.72 | A53@1200      | **0.000009**    | GC7000UL@1000  | **0.000091**   |
+
 
 ### Fibonacci
 
@@ -108,7 +151,7 @@ $ make
 |                        | Kernel  | CPU@Frequency | Time (seconds)  | GPU@Frequency  | Time (seconds) |
 |------------------------|---------|---------------|-----------------|----------------|----------------|
 | **VAR-SOM-MX8**        | 5.10.72 | A72@600       | **0.000008**    | GC7000XSVX@624 | **0.000188**   |
-| **VAR-SOM-MX8X**       |         |               |                 |                |                |
+| **VAR-SOM-MX8X**       | 5.10.72 | A35@900       | **0.000011**    | GC7000L@850    | **0.000170**   |
 | **VAR-SOM-MX8M-NANO**  |         |               |                 |                |                |
 | **DART-MX8M**          |         |               |                 |                |                |
 | **DART-MX8M-MINI**     |         |               |                 |                |                |
