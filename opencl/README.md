@@ -74,7 +74,21 @@ $ make
 
 ## Examples
 
-### Sum Array
+__NOTE:__ These examples are for demonstration only, it should not be considered
+production ready.
+
+The tests below show the examples that runs better on the GPU, and the examples
+that runs better on the CPU. All the examples that have none or minimal branches
+work better on the GPU, while the examples that require if-else statements have
+better performance on the CPU.
+
+The problem domains for CPUs and GPUs are different. CPUs do complex, branch-heavy
+work that's hard to thread, so they are faster with branch prediction and other
+optimizations. GPUs, on the other hand, repeat the same block of math in parallel.
+
+### Better on the GPU
+
+#### Sum Array
 
 * [Sum Array Example](https://github.com/varigit/var-demos/tree/master/opencl/sum)
 
@@ -86,8 +100,7 @@ $ make
 | **DART-MX8M**          | 5.10.142| A53@1000      | **0.013507**    | GC7000L@800    | **0.005507**   |
 | **DART-MX8M-PLUS**     | 5.10.72 | A53@1200      | **0.010300**    | GC7000UL@1000  | **0.002497**   |
 
-
-### Square Array
+#### Square Array
 
 * [Square Array Example](https://github.com/varigit/var-demos/tree/master/opencl/square)
 
@@ -99,8 +112,7 @@ $ make
 | **DART-MX8M**          | 5.10.142| A53@1000      | **0.014121**    | GC7000L@800    | **0.003181**   |
 | **DART-MX8M-PLUS**     | 5.10.72 | A53@1200      | **0.011486**    | GC7000UL@1000  | **0.002504**   |
 
-
-### Saxpy (Single-Precision A·X Plus Y)
+#### Saxpy (Single-Precision A·X Plus Y)
 
 * [Saxpy Example](https://github.com/varigit/var-demos/tree/master/opencl/saxpy)
 
@@ -108,12 +120,11 @@ $ make
 |------------------------|---------|---------------|-----------------|----------------|----------------|
 | **VAR-SOM-MX8**        | 5.10.72 | A72@600       | **0.521095**    | GC7000XSVX@624 | **0.056880**   |
 | **VAR-SOM-MX8X**       | 5.10.72 | A35@900       | **2.004977**    | GC7000L@850    | **0.190855**   |
-| **VAR-SOM-MX8M-NANO**  | 5.10.142| A53@1200      | **1.371632**    | GC7000UL@500   | ** N/A **      |
+| **VAR-SOM-MX8M-NANO**  | 5.10.142| A53@1200      | **1.371632**    | GC7000UL@500   | **N/A**        |
 | **DART-MX8M**          | 5.10.142| A53@1000      | **1.311182**    | GC7000L@800    | **0.205353**   |
 | **DART-MX8M-PLUS**     | 5.10.72 | A53@1200      | **1.063134**    | GC7000UL@1000  | **0.245928**   |
 
-
-### Matrices Multiplication
+#### Matrices Multiplication
 
 * [Matrices Multiplication Example](https://github.com/varigit/var-demos/tree/master/opencl/matrix)
 
@@ -126,7 +137,9 @@ $ make
 | **DART-MX8M-PLUS**     | 5.10.72 | A53@1200      | **15.803927**   | GC7000UL@1000  | **1.695544**   |
 
 
-### Binary Search
+### Better on the CPU
+
+#### Binary Search
 
 * [Binary Search Example](https://github.com/varigit/var-demos/tree/master/opencl/binary_search)
 
@@ -138,8 +151,7 @@ $ make
 | **DART-MX8M**          | 5.10.142| A53@1000      | **0.000015**    | GC7000L@800    | **0.000050**   |
 | **DART-MX8M-PLUS**     | 5.10.72 | A53@1200      | **0.000009**    | GC7000UL@1000  | **0.000091**   |
 
-
-### Fibonacci
+#### Fibonacci
 
 * [Fibonacci Example](https://github.com/varigit/var-demos/tree/master/opencl/fib)
 
@@ -150,3 +162,9 @@ $ make
 | **VAR-SOM-MX8M-NANO**  | 5.10.142| A53@1200      | **0.000012**    | GC7000UL@500   | **0.000641**   |
 | **DART-MX8M**          | 5.10.142| A53@1000      | **0.000014**    | GC7000L@800    | **0.000379**   |
 | **DART-MX8M-PLUS**     | 5.10.72 | A53@1200      | **0.000007**    | GC7000UL@1000  | **0.000109**   |
+
+
+## Copyright and License
+
+Copyright 2022 Variscite LTD. Free use of this software is granted under
+the terms of the [MIT License](https://github.com/varigit/var-demos/blob/master/opencl/LICENSE).
