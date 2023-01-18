@@ -1,5 +1,6 @@
 # Copyright 2023 Variscite LTD
 # SPDX-License-Identifier: BSD-3-Clause
+import argparse
 
 import ethosu.interpreter as ethosu
 from PIL import Image
@@ -7,36 +8,64 @@ import numpy as np
 import sys
 import time
 
-MODEL_PATH = "model/mobilenet_v1_1.0_224_quant_vela.tflite"
-LABEL_PATH = "model/labels_mobilenet_quant_v1_224.txt"
-IMAGE_PATH = "media/car.jpg"
+from helper.config import TITLE
+from helper.opencv import put_info_on_frame
+from helper.utils import load_labels, Timer
 
-def load_labels(filename):
-        with open(filename, 'r') as f:
-                return [line.strip() for line in f.readlines()]
+def image_classification(args):
+    labels = load_labels(args['label'])
 
-interpreter = ethosu.Interpreter(MODEL_PATH)
+    interpreter = ethosu.Interpreter(args['model'])
 
-inputs_details = interpreter.get_input_details()
-output_details = interpreter.get_output_details()
+    input_details = interpreter.get_input_details()
+    output_details = interpreter.get_output_details()
 
-w, h = inputs_details[0]['shape'][1], inputs_details[0]['shape'][2]
-img = Image.open(IMAGE_PATH).resize((w, h))
+    with Image.open(args['image']) as im:
+        _, height, width, _ = input_details[0]['shape']
+        image = np.array(im)
+        image = image[:, :, ::-1].copy()
+        image_resized = im.resize((width, height))
+        image_resized = np.expand_dims(image_resized, axis = 0)
 
-data = np.expand_dims(img, axis=0)
-interpreter.set_input(0, data)
+    interpreter.set_tensor(input_details[0]['index'], image_resized)
 
-startTime = time.time()
-interpreter.invoke()
-delta = time.time() - startTime
+    timer = Timer()
+    interpreter.invoke()
+    with timer.timeit():
+        interpreter.invoke()
 
-print("Inference time:", '%.1f' % (delta * 1000), "ms\n")
+    output_details = interpreter.get_output_details()[0]
+    output = np.squeeze(interpreter.get_tensor(output_details['index']))
 
-output_data = interpreter.get_output(output_details[0]['index'])
+    k = int(args['kresults'])
+    top_k = output.argsort()[-k:][::-1]
+    result = []
+    for i in top_k:
+        score = float(output[i] / 255.0)
+        result.append((i, score))
 
-results = np.squeeze(output_data)
-top_k = results.argsort()[-5:][::-1]
+    image = put_info_on_frame(image, result, labels,
+                              timer.time, args['model'], args['image'])
+    cv2.imshow(TITLE, image)
+    cv2.waitKey()
 
-labels = load_labels(LABEL_PATH)
-for i in top_k:
-        print('{:08.6f}: {}'.format(float(results[i] / 255.0), labels[i]))
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+          '--model',
+          default='model/mobilenet_v1_1.0_224_quant_vela.tflite',
+          help='.tflite model to be executed')
+    parser.add_argument(
+          '--label',
+          default='model/labels_mobilenet_quant_v1_224.txt',
+          help='name of file containing labels')
+    parser.add_argument(
+          '--image',
+          default='media/car.jpg',
+          help='image file to be classified')
+    parser.add_argument(
+          '--kresults',
+          default='3',
+          help='number of displayed results')
+    args = vars(parser.parse_args())
+    image_classification(args)
