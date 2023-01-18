@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 import argparse
 
+import cv2
 import ethosu.interpreter as ethosu
 from PIL import Image
 import numpy as np
@@ -27,15 +28,13 @@ def image_classification(args):
         image_resized = im.resize((width, height))
         image_resized = np.expand_dims(image_resized, axis = 0)
 
-    interpreter.set_tensor(input_details[0]['index'], image_resized)
+    interpreter.set_input(input_details[0]['index'], image_resized)
 
     timer = Timer()
-    interpreter.invoke()
     with timer.timeit():
         interpreter.invoke()
 
-    output_details = interpreter.get_output_details()[0]
-    output = np.squeeze(interpreter.get_tensor(output_details['index']))
+    output = np.squeeze(interpreter.get_output(output_details[0]['index']))
 
     k = int(args['kresults'])
     top_k = output.argsort()[-k:][::-1]
