@@ -51,7 +51,7 @@ def video_classification(args):
             with timer.timeit():
                 interpreter.invoke()
 
-            output = np.squeeze(interpreter.get_tensor(output_details[0]['index']))
+            output = np.squeeze(interpreter.get_input(output_details[0]['index']))
 
             k = int(args['kresults'])
             top_k = output.argsort()[-k:][::-1]
