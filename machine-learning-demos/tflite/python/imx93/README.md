@@ -1,4 +1,4 @@
-# Running Machine Learning Examples on the i.MX 93
+# Running Machine Learning on the i.MX 93
 
 The i.MX 93 is slightly different from the i.MX8M Plus when we need to run
 Machine Learning examples on the NPU. For more information, please read the
@@ -44,3 +44,10 @@ operator to the Ethos-U firmware on Cortex-M reaching the Ethos-U NPU.
    ```
 
 Then, you will get the `model_example_vela.tflite` model.
+
+## Classification Examples
+
+Try the classification examples:
+
+* [Image File Example](https://github.com/varigit/var-demos/blob/master/machine-learning-demos/tflite/python/imx93/classification/image_classification.py)
+* [Video File Example](https://github.com/varigit/var-demos/blob/master/machine-learning-demos/tflite/python/imx93/classification/video_classification.py)
