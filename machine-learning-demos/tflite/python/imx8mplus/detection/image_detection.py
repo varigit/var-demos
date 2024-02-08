@@ -8,16 +8,27 @@ from time import monotonic
 import cv2
 import numpy as np
 from PIL import Image
-from tflite_runtime.interpreter import Interpreter
+
+try:
+    from tflite_runtime.interpreter import Interpreter
+    from tflite_runtime.interpreter import load_delegate
+except ImportError:
+    sys.exit("No TensorFlow Lite Runtime module found!")
 
 from helper.config import TITLE
 from helper.opencv import put_info_on_frame
 from helper.utils import get_tensor, load_labels, Timer
 
+# Constants
+EXT_DELEGATE_PATH = "/usr/lib/libvx_delegate.so"
+
 def image_detection(args):
     labels = load_labels(args['label'])
 
-    interpreter = Interpreter(model_path=args['model'])
+    ext_delegate_options = {}
+    ext_delegate = [load_delegate(EXT_DELEGATE_PATH, ext_delegate_options)]
+
+    interpreter = Interpreter(model_path=args['model'], experimental_delegates=ext_delegate, num_threads=1)
     interpreter.allocate_tensors()
     input_details = interpreter.get_input_details()
     output_details = interpreter.get_output_details()
