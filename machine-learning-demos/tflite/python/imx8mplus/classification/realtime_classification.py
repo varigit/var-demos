@@ -5,11 +5,19 @@ import argparse
 import cv2
 import numpy as np
 from PIL import Image
-from tflite_runtime.interpreter import Interpreter
+
+try:
+    from tflite_runtime.interpreter import Interpreter
+    from tflite_runtime.interpreter import load_delegate
+except ImportError:
+    sys.exit("No TensorFlow Lite Runtime module found!")
 
 from helper.config import TITLE
 from helper.opencv import put_info_on_frame, put_fps_on_frame
 from helper.utils import load_labels, Timer, Framerate
+
+# Constants
+EXT_DELEGATE_PATH = "/usr/lib/libvx_delegate.so"
 
 def open_video_capture(width = 640, height = 480, framerate = "30/1"):
     pipeline = "v4l2src device={} ! video/x-raw,width={},height={}," \
@@ -21,7 +29,10 @@ def open_video_capture(width = 640, height = 480, framerate = "30/1"):
 def realtime_classification(args):
     labels = load_labels(args['label'])
 
-    interpreter = Interpreter(model_path=args['model'])
+    ext_delegate_options = {}
+    ext_delegate = [load_delegate(EXT_DELEGATE_PATH, ext_delegate_options)]
+
+    interpreter = Interpreter(model_path=args['model'], experimental_delegates=ext_delegate, num_threads=1)
     interpreter.allocate_tensors()
     input_details = interpreter.get_input_details()
     output_details = interpreter.get_output_details()
