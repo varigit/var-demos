@@ -9,7 +9,6 @@
         "stopAtEntry": true,
         "cwd": "${workspaceFolder}",
         "environment": [],
-        "console": "integratedTerminal",
         "MIMode": "gdb",
         "targetArchitecture": "arm64",
         "preLaunchTask": "var-deploy-gdb",
