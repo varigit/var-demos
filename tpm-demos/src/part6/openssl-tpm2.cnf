@@ -1,0 +1,18 @@
+# openssl-tpm2.cnf
+openssl_conf = openssl_init
+
+[openssl_init]
+providers = provider_sect
+
+[provider_sect]
+default = default_sect
+tpm2 = tpm2_sect
+
+[default_sect]
+activate = 1
+
+[tpm2_sect]
+activate = 1
+# module path varies by distro/build:
+module = /usr/lib/ossl-modules/tpm2.so
+
