@@ -1,0 +1,122 @@
+version = 1
+
+[platforms.imx8mplus]
+name = "i.MX 8M Plus"
+compatible = ["fsl,imx8mp"]
+status = "validated"
+
+[platforms.imx93]
+name = "i.MX 93"
+compatible = ["fsl,imx93"]
+status = "validated"
+
+[platforms.imx95]
+name = "i.MX 95"
+compatible = ["fsl,imx95"]
+status = "validated"
+
+[[groups]]
+id = "ai-ml"
+title = "AI / ML"
+description = "Image, camera and video inference on the NPU"
+source = "ai-ml-demos"
+platforms = ["imx8mplus", "imx93", "imx95"]
+
+[[groups]]
+id = "multimedia"
+title = "Multimedia / GStreamer"
+description = "Play local movies with playback controls"
+source = "multimedia-demos"
+platforms = ["imx8mplus", "imx93", "imx95"]
+
+[[groups]]
+id = "opencl"
+title = "OpenCL / GPU compute"
+description = "Run and verify a GPU vector-addition kernel"
+source = "opencl/python"
+platforms = ["imx8mplus", "imx95"]
+
+[[launchers]]
+id = "video-player"
+select_video = true
+video_argument = "positional"
+video_demo_by_platform = {imx8mplus = "ai-ml/high-resolution-video-detection", imx93 = "ai-ml/vision-imx93", imx95 = "ai-ml/vision-imx95"}
+title = "Video player"
+description = "Open a movie; play, pause, stop, seek and adjust volume"
+group = "multimedia"
+demo = "multimedia"
+command = ["python3", "video-player/player.py"]
+native_wayland = true
+
+[[launchers]]
+id = "opencl-vector"
+title = "Verify GPU vector addition"
+description = "Compile an OpenCL kernel, check its results and measure it"
+group = "opencl"
+demo = "opencl"
+command = ["python3", "vector_add.py"]
+terminal_output = true
+
+# Curated image-provided binaries: discovered in place, never installed.
+[[external_demos]]
+id = "fractal"
+title = "GPU fractal animation"
+description = "NXP SDK: animated fractals rendered with OpenGL ES"
+executable = "/opt/imx-gpu-sdk/GLES3/FractalShader___Wayland/GLES3.FractalShader___Wayland"
+platforms = ["imx8mplus", "imx95"]
+
+[[external_demos]]
+id = "render-texture"
+title = "GPU render to texture"
+description = "NXP SDK: offscreen rendering and texture composition"
+executable = "/opt/imx-gpu-sdk/GLES3/RenderToTexture___Wayland/GLES3.RenderToTexture___Wayland"
+platforms = ["imx8mplus"]
+
+[[external_demos]]
+id = "opencl-filter"
+title = "OpenCL Gaussian image filter"
+description = "NXP SDK: GPU image filtering with graphical output"
+executable = "/opt/imx-gpu-sdk/GLES3/OpenCLGaussianFilter___Wayland/GLES3.OpenCLGaussianFilter___Wayland"
+platforms = ["imx8mplus", "imx95"]
+
+[[external_demos]]
+id = "particles"
+title = "GPU particle animation"
+description = "NXP SDK: animated particles rendered with OpenGL ES"
+executable = "/opt/imx-gpu-sdk/GLES3/ParticleSystem___Wayland/GLES3.ParticleSystem___Wayland"
+platforms = ["imx8mplus", "imx95"]
+
+[[external_demos]]
+id = "bloom"
+title = "GPU bloom lighting"
+description = "NXP SDK: a 3D scene with a bloom post-processing effect"
+executable = "/opt/imx-gpu-sdk/GLES3/Bloom___Wayland/GLES3.Bloom___Wayland"
+platforms = ["imx8mplus", "imx95"]
+
+[[external_demos]]
+id = "skybox"
+title = "GPU panoramic skybox"
+description = "NXP SDK: a cubemap environment rendered with OpenGL ES"
+executable = "/opt/imx-gpu-sdk/GLES3/Skybox___Wayland/GLES3.Skybox___Wayland"
+platforms = ["imx8mplus", "imx95"]
+
+[[external_demos]]
+id = "model-viewer"
+title = "GPU 3D model viewer"
+description = "NXP SDK: render a textured 3D model with per-pixel lighting"
+executable = "/opt/imx-gpu-sdk/GLES3/ModelViewer___Wayland/GLES3.ModelViewer___Wayland"
+platforms = ["imx8mplus", "imx95"]
+
+[[external_demos]]
+id = "verlet"
+title = "Verlet physics animation"
+description = "NXP SDK: a graphical Verlet integration example"
+executable = "/opt/imx-gpu-sdk/GLES3/VerletIntegration101___Wayland/GLES3.VerletIntegration101___Wayland"
+platforms = ["imx8mplus", "imx95"]
+
+[[external_demos]]
+id = "spring-background"
+title = "Spring background animation"
+description = "NXP SDK: an animated spring-based background"
+executable = "/opt/imx-gpu-sdk/GLES3/SpringBackground___Wayland/GLES3.SpringBackground___Wayland"
+platforms = ["imx8mplus", "imx95"]

@@ -1,0 +1,651 @@
+version = 1
+
+[[launchers]]
+id = "people-segmentation-image"
+title = "Segment people in an image with VIP8000"
+description = "Lightweight person/background mask; experimental"
+demo = "vision-imx8mplus"
+startup_progress = true
+command = ["python3", "demo.py", "--task", "people", "--image", "media/segmentation-image.jpg"]
+
+[[launchers]]
+id = "people-segmentation-video"
+title = "Segment people in a video with VIP8000"
+description = "Lightweight person/background mask; experimental"
+demo = "vision-imx8mplus"
+startup_progress = true
+select_video = true
+video_task = "face"
+video_prompt = "Choose a People Video"
+command = ["python3", "demo.py", "--task", "people"]
+
+[[launchers]]
+id = "people-segmentation-camera"
+title = "Segment people in the camera with VIP8000"
+description = "Lightweight person/background mask; experimental"
+demo = "vision-imx8mplus"
+startup_progress = true
+select_camera = true
+command = ["python3", "demo.py", "--task", "people"]
+
+[[launchers]]
+id = "ethosu-people-segmentation-image"
+title = "Segment people in an image with Ethos-U65"
+description = "Lightweight person/background mask; experimental"
+demo = "vision-imx93"
+startup_progress = true
+command = ["python3", "demo.py", "--task", "people", "--image", "media/segmentation-image.jpg"]
+
+[[launchers]]
+id = "ethosu-people-segmentation-video"
+title = "Segment people in a video with Ethos-U65"
+description = "Lightweight person/background mask; experimental"
+demo = "vision-imx93"
+startup_progress = true
+select_video = true
+video_task = "face"
+video_prompt = "Choose a People Video"
+command = ["python3", "demo.py", "--task", "people"]
+
+[[launchers]]
+id = "ethosu-people-segmentation-camera"
+title = "Segment people in the camera with Ethos-U65"
+description = "Lightweight person/background mask; experimental"
+demo = "vision-imx93"
+startup_progress = true
+select_camera = true
+command = ["python3", "demo.py", "--task", "people"]
+
+[[launchers]]
+id = "neutron-people-segmentation-image"
+title = "Segment people in an image with Neutron"
+description = "Lightweight person/background mask; experimental"
+demo = "vision-imx95"
+startup_progress = true
+command = ["python3", "demo.py", "--task", "people", "--image", "media/segmentation-image.jpg"]
+
+[[launchers]]
+id = "neutron-people-segmentation-video"
+title = "Segment people in a video with Neutron"
+description = "Lightweight person/background mask; experimental"
+demo = "vision-imx95"
+startup_progress = true
+select_video = true
+video_task = "face"
+video_prompt = "Choose a People Video"
+command = ["python3", "demo.py", "--task", "people"]
+
+[[launchers]]
+id = "neutron-people-segmentation-camera"
+title = "Segment people in the camera with Neutron"
+description = "Lightweight person/background mask; experimental"
+demo = "vision-imx95"
+startup_progress = true
+select_camera = true
+command = ["python3", "demo.py", "--task", "people"]
+
+[[launchers]]
+id = "neutron-segmentation-image"
+title = "Paint people and vehicles in an image with Neutron"
+description = "Semantic masks by class; experimental, not instance tracking"
+demo = "vision-imx95"
+startup_progress = true
+command = ["python3", "demo.py", "--task", "segmentation", "--image", "media/segmentation-image.jpg"]
+
+[[launchers]]
+id = "neutron-segmentation-video"
+title = "Paint people and vehicles in a video with Neutron"
+description = "Semantic masks by class; experimental, not instance tracking"
+demo = "vision-imx95"
+startup_progress = true
+select_video = true
+video_demo = "vision-imx95"
+command = ["python3", "demo.py", "--task", "segmentation"]
+
+[[launchers]]
+id = "neutron-segmentation-camera"
+title = "Paint people and vehicles in the camera with Neutron"
+description = "Semantic masks by class; experimental, not instance tracking"
+demo = "vision-imx95"
+startup_progress = true
+select_camera = true
+command = ["python3", "demo.py", "--task", "segmentation"]
+
+[[launchers]]
+id = "segmentation-image"
+title = "Paint people and vehicles in an image with VIP8000"
+description = "Semantic masks by class; experimental, not instance tracking"
+demo = "vision-imx8mplus"
+startup_progress = true
+command = ["python3", "demo.py", "--task", "segmentation", "--image", "media/segmentation-image.jpg"]
+
+[[launchers]]
+id = "segmentation-video"
+title = "Paint people and vehicles in a video with VIP8000"
+description = "Semantic masks by class; experimental, not instance tracking"
+demo = "vision-imx8mplus"
+startup_progress = true
+select_video = true
+video_demo = "high-resolution-video-detection"
+command = ["python3", "demo.py", "--task", "segmentation"]
+
+[[launchers]]
+id = "segmentation-camera"
+title = "Paint people and vehicles in the camera with VIP8000"
+description = "Semantic masks by class; experimental, not instance tracking"
+demo = "vision-imx8mplus"
+startup_progress = true
+select_camera = true
+command = ["python3", "demo.py", "--task", "segmentation"]
+
+[[launchers]]
+id = "ethosu-segmentation-image"
+title = "Paint people and vehicles in an image with Ethos-U65"
+description = "Semantic masks by class; experimental, not instance tracking"
+demo = "vision-imx93"
+startup_progress = true
+command = ["python3", "demo.py", "--task", "segmentation", "--image", "media/segmentation-image.jpg"]
+
+[[launchers]]
+id = "ethosu-segmentation-video"
+title = "Paint people and vehicles in a video with Ethos-U65"
+description = "Semantic masks by class; experimental, not instance tracking"
+demo = "vision-imx93"
+startup_progress = true
+select_video = true
+video_demo = "vision-imx93"
+command = ["python3", "demo.py", "--task", "segmentation"]
+
+[[launchers]]
+id = "ethosu-segmentation-camera"
+title = "Paint people and vehicles in the camera with Ethos-U65"
+description = "Semantic masks by class; experimental, not instance tracking"
+demo = "vision-imx93"
+startup_progress = true
+select_camera = true
+command = ["python3", "demo.py", "--task", "segmentation"]
+
+[[videos]]
+demo = "vision-imx8mplus"
+task = "face"
+title = "City Selfie - HD 720p, 41 seconds"
+clip_title = "City Selfie - 41 seconds"
+resolution = "720p"
+source = "User-provided clip 1117992"
+path = "assets/videos/face_1117992_1280x720.mp4"
+
+[[videos]]
+demo = "vision-imx8mplus"
+task = "face"
+title = "City Selfie - Full HD 1080p, 41 seconds"
+clip_title = "City Selfie - 41 seconds"
+resolution = "1080p"
+source = "User-provided clip 1117992"
+path = "assets/videos/face_1117992_1920x1080.mp4"
+
+[[videos]]
+demo = "vision-imx93"
+task = "face"
+title = "City Selfie - HD 720p, 41 seconds"
+clip_title = "City Selfie - 41 seconds"
+resolution = "720p"
+source = "User-provided clip 1117992"
+path = "assets/videos/face_1117992_1280x720.avi"
+
+[[videos]]
+demo = "vision-imx93"
+task = "face"
+title = "City Selfie - Full HD 1080p, 41 seconds"
+clip_title = "City Selfie - 41 seconds"
+resolution = "1080p"
+source = "User-provided clip 1117992"
+path = "assets/videos/face_1117992_1920x1080.avi"
+
+[[videos]]
+demo = "vision-imx95"
+task = "face"
+title = "City Selfie - HD 720p, 41 seconds"
+clip_title = "City Selfie - 41 seconds"
+resolution = "720p"
+source = "User-provided clip 1117992"
+path = "assets/videos/face_1117992_1280x720.mp4"
+
+[[videos]]
+demo = "vision-imx95"
+task = "face"
+title = "City Selfie - Full HD 1080p, 41 seconds"
+clip_title = "City Selfie - 41 seconds"
+resolution = "1080p"
+source = "User-provided clip 1117992"
+path = "assets/videos/face_1117992_1920x1080.mp4"
+
+
+[platforms.imx8mplus]
+camera_resolutions = [{title = "SD - 720 x 480 (default)", value = "720x480"}, {title = "VGA - 640 x 480", value = "640x480"}, {title = "HD - 720p (1280 x 720)", value = "1280x720"}, {title = "Full HD - 1080p (1920 x 1080)", value = "1920x1080"}]
+name = "i.MX 8M Plus"
+compatible = ["fsl,imx8mp"]
+status = "validated"
+asset_base_url = "https://nyc3.digitaloceanspaces.com/variscite-marketing/demos/machine-learning/imx8mplus/v2"
+delegate_path = "/usr/lib/libvx_delegate.so"
+runtime_plugins = "appsink decodebin imxvideoconvert_g2d h264parse qtdemux v4l2src videoconvert"
+
+[platforms.imx93]
+camera_resolutions = [{title = "VGA - 640 x 480 (default)", value = "640x480"}, {title = "HD - 720p (1280 x 720)", value = "1280x720"}, {title = "Full HD - 1080p (1920 x 1080)", value = "1920x1080"}]
+name = "i.MX 93"
+compatible = ["fsl,imx93"]
+status = "validated"
+asset_base_url = "https://nyc3.digitaloceanspaces.com/variscite-marketing/demos/machine-learning/imx93/v1"
+delegate_path = "/usr/lib/libethosu_delegate.so"
+runtime_plugins = "appsink v4l2src videoconvert avidemux jpegdec imxvideoconvert_pxp"
+
+[platforms.imx95]
+camera_resolutions = [{title = "HD - 720p (1280 x 720, default)", value = "1280x720"}, {title = "VGA - 640 x 480", value = "640x480"}, {title = "Full HD - 1080p (1920 x 1080)", value = "1920x1080"}]
+name = "i.MX 95"
+compatible = ["fsl,imx95"]
+status = "validated"
+asset_base_url = "https://nyc3.digitaloceanspaces.com/variscite-marketing/demos/machine-learning/imx95/v1"
+delegate_path = "/usr/lib/libneutron_delegate.so"
+runtime_plugins = "appsink v4l2src videoconvert qtdemux h264parse v4l2h264dec glupload glcolorconvert glcolorscale gldownload"
+
+[[demos]]
+id = "vision-imx8mplus"
+title = "Face detection and semantic segmentation"
+path = "camera-vision"
+platforms = ["imx8mplus"]
+entrypoint = "python3 demo.py --task face"
+manifest = "assets-face-imx8mplus.manifest"
+
+[[launchers]]
+id = "face-image"
+title = "Detect faces in an image with VIP8000"
+demo = "vision-imx8mplus"
+startup_progress = true
+command = ["python3", "demo.py", "--task", "face", "--image", "media/face-image.jpg"]
+
+[[launchers]]
+id = "face-video"
+title = "Detect faces in a video with VIP8000"
+demo = "vision-imx8mplus"
+startup_progress = true
+select_video = true
+video_task = "face"
+command = ["python3", "demo.py", "--task", "face"]
+
+[[launchers]]
+id = "face-camera"
+title = "Detect faces in the camera with VIP8000"
+demo = "vision-imx8mplus"
+startup_progress = true
+select_camera = true
+command = ["python3", "demo.py", "--task", "face"]
+
+[[launchers]]
+id = "ethosu-face-image"
+title = "Detect faces in an image with Ethos-U65"
+demo = "vision-imx93"
+startup_progress = true
+command = ["python3", "demo.py", "--task", "face", "--image", "media/face-image.jpg"]
+
+[[launchers]]
+id = "ethosu-face-video"
+title = "Detect faces in a video with Ethos-U65"
+demo = "vision-imx93"
+startup_progress = true
+select_video = true
+video_task = "face"
+command = ["python3", "demo.py", "--task", "face"]
+
+[[launchers]]
+id = "ethosu-face-camera"
+title = "Detect faces in the camera with Ethos-U65"
+demo = "vision-imx93"
+startup_progress = true
+select_camera = true
+command = ["python3", "demo.py", "--task", "face"]
+
+[[launchers]]
+id = "neutron-face-image"
+title = "Detect faces in an image with Neutron"
+demo = "vision-imx95"
+startup_progress = true
+command = ["python3", "demo.py", "--task", "face", "--image", "media/face-image.jpg"]
+
+[[launchers]]
+id = "neutron-face-video"
+title = "Detect faces in a video with Neutron"
+demo = "vision-imx95"
+startup_progress = true
+select_video = true
+video_task = "face"
+command = ["python3", "demo.py", "--task", "face"]
+
+[[launchers]]
+id = "neutron-face-camera"
+title = "Detect faces in the camera with Neutron"
+demo = "vision-imx95"
+startup_progress = true
+select_camera = true
+command = ["python3", "demo.py", "--task", "face"]
+
+[[demos]]
+id = "vision-imx93"
+title = "Ethos-U65 camera and video inference"
+path = "camera-vision"
+platforms = ["imx93"]
+entrypoint = "python3 demo.py --task detection"
+manifest = "assets-imx93.manifest"
+
+[[demos]]
+id = "vision-imx95"
+title = "Neutron camera and video inference"
+path = "camera-vision"
+platforms = ["imx95"]
+entrypoint = "python3 demo.py --task detection"
+manifest = "assets-imx95.manifest"
+
+[[launchers]]
+id = "ethosu-classification-camera"
+select_camera = true
+title = "Classify the camera with Ethos-U65"
+description = "MobileNet V1 on the MX93 NPU; OV5640 camera"
+demo = "vision-imx93"
+startup_progress = true
+command = ["python3", "demo.py", "--task", "classification"]
+
+[[launchers]]
+id = "ethosu-classification-image"
+title = "Classify an image with Ethos-U65"
+demo = "vision-imx93"
+startup_progress = true
+command = ["python3", "demo.py", "--task", "classification", "--image", "media/classification-image.jpg"]
+
+[[launchers]]
+id = "ethosu-detection-image"
+title = "Detect objects in an image with Ethos-U65"
+demo = "vision-imx93"
+startup_progress = true
+command = ["python3", "demo.py", "--task", "detection", "--image", "media/detection-image.png"]
+
+[[launchers]]
+id = "neutron-classification-image"
+title = "Classify an image with Neutron"
+demo = "vision-imx95"
+startup_progress = true
+command = ["python3", "demo.py", "--task", "classification", "--image", "media/classification-image.jpg"]
+
+[[launchers]]
+id = "neutron-detection-image"
+title = "Detect objects in an image with Neutron"
+demo = "vision-imx95"
+startup_progress = true
+command = ["python3", "demo.py", "--task", "detection", "--image", "media/detection-image.png"]
+
+[[launchers]]
+id = "ethosu-detection-camera"
+select_camera = true
+title = "Detect objects in the camera with Ethos-U65"
+description = "SSD MobileNet V1; NPU inference and CPU box postprocessing"
+demo = "vision-imx93"
+startup_progress = true
+command = ["python3", "demo.py", "--task", "detection"]
+
+[[launchers]]
+id = "ethosu-classification-video"
+title = "Classify a video with Ethos-U65"
+description = "Choose a real HD sample; MJPEG decoding on the CPU"
+demo = "vision-imx93"
+startup_progress = true
+select_video = true
+command = ["python3", "demo.py", "--task", "classification"]
+
+[[launchers]]
+id = "ethosu-detection-video"
+title = "Detect objects in a video with Ethos-U65"
+description = "Choose HD or Full HD; CPU video decode and Ethos-U65 inference"
+demo = "vision-imx93"
+startup_progress = true
+select_video = true
+command = ["python3", "demo.py", "--task", "detection"]
+
+[[launchers]]
+id = "neutron-classification-camera"
+select_camera = true
+title = "Classify the camera with Neutron"
+description = "MobileNet V1 on the MX95 NPU; CSI0 OV5640 camera"
+demo = "vision-imx95"
+startup_progress = true
+command = ["python3", "demo.py", "--task", "classification"]
+
+[[launchers]]
+id = "neutron-detection-camera"
+select_camera = true
+title = "Detect objects in the camera with Neutron"
+description = "SSD-Lite V2; Neutron inference and CPU box decoding"
+demo = "vision-imx95"
+startup_progress = true
+command = ["python3", "demo.py", "--task", "detection"]
+
+[[launchers]]
+id = "neutron-classification-video"
+title = "Classify a video with Neutron"
+description = "Choose HD footage; hardware decoding and GPU color conversion"
+demo = "vision-imx95"
+startup_progress = true
+select_video = true
+command = ["python3", "demo.py", "--task", "classification"]
+
+[[launchers]]
+id = "neutron-detection-video"
+title = "Detect objects in a video with Neutron"
+description = "Choose HD or Full HD; hardware decoder, GPU and Neutron"
+demo = "vision-imx95"
+startup_progress = true
+select_video = true
+command = ["python3", "demo.py", "--task", "detection"]
+
+[[demos]]
+id = "classification"
+title = "Image, video, and camera classification"
+path = "classification"
+platforms = ["imx8mplus"]
+entrypoint = "python3 image_classification.py"
+manifest = "assets.manifest"
+
+[[demos]]
+id = "detection"
+title = "Image, video, and camera object detection"
+path = "detection"
+platforms = ["imx8mplus"]
+entrypoint = "python3 image_detection.py"
+manifest = "assets.manifest"
+
+[[demos]]
+id = "high-resolution-video-detection"
+title = "High-resolution video object detection"
+path = "high-resolution-video-detection"
+platforms = ["imx8mplus"]
+entrypoint = "python3 high-resolution-video-detection.py --combination 2"
+manifest = "assets.manifest"
+
+[[demos]]
+id = "hand-gesture"
+title = "Experimental hand landmarks and gestures"
+path = "hand-gesture"
+platforms = ["imx8mplus"]
+entrypoint = "python3 demo.py --camera /dev/video4"
+manifest = "assets.manifest"
+
+[[launchers]]
+id = "hand-gesture-camera"
+select_camera = true
+startup_progress = true
+title = "Recognize hand gestures with VIP8000 (experimental)"
+category = "HAND AND GESTURES"
+menu_title = "Camera"
+description = "single hand; open, fist, pointing or victory; experimental"
+demo = "hand-gesture"
+command = ["python3", "demo.py", "--camera", "{camera}"]
+
+[[launchers]]
+id = "classification-image"
+title = "Classify an image with VIP8000"
+category = "CLASSIFICATION"
+menu_title = "Image"
+description = "identify the main subject in a sample image"
+demo = "classification"
+command = ["python3", "image_classification.py"]
+
+[[launchers]]
+id = "classification-video"
+startup_progress = true
+select_video = true
+video_demo = "high-resolution-video-detection"
+title = "Classify a video with VIP8000"
+category = "CLASSIFICATION"
+menu_title = "Video"
+description = "identify the main subject in each video frame"
+demo = "classification"
+command = ["python3", "video_classification.py", "--videofmw", "gstreamer"]
+
+[[launchers]]
+id = "classification-camera"
+startup_progress = true
+select_camera = true
+title = "Classify the camera with VIP8000"
+category = "CLASSIFICATION"
+menu_title = "Camera"
+description = "classify the live camera feed"
+demo = "classification"
+command = ["python3", "realtime_classification.py", "--camera", "{camera}"]
+
+[[launchers]]
+id = "detection-image"
+title = "Detect objects in an image with VIP8000"
+category = "OBJECT DETECTION"
+menu_title = "Image"
+description = "locate and label objects in a sample image"
+demo = "detection"
+command = ["python3", "image_detection.py"]
+
+[[launchers]]
+id = "detection-video"
+startup_progress = true
+select_video = true
+video_demo = "high-resolution-video-detection"
+title = "Detect objects in a video with VIP8000"
+category = "OBJECT DETECTION"
+menu_title = "Video"
+description = "locate and label objects in a sample video"
+demo = "detection"
+command = ["python3", "video_detection.py", "--videofmw", "gstreamer"]
+
+[[launchers]]
+id = "detection-camera"
+startup_progress = true
+select_camera = true
+title = "Detect objects in the camera with VIP8000"
+category = "OBJECT DETECTION"
+menu_title = "Camera"
+description = "locate and label objects from the live camera"
+demo = "detection"
+command = ["python3", "realtime_detection.py", "--camera", "{camera}"]
+
+[[videos]]
+demo = "high-resolution-video-detection"
+title = "Buildings A - HD 720p, 34 seconds"
+clip_title = "Buildings A - 34 seconds (Freepik)"
+resolution = "720p"
+source = "Freepik (user-provided)"
+path = "assets/videos/buildings_458687_1280x720.mp4"
+combination = 2
+
+[[videos]]
+demo = "high-resolution-video-detection"
+title = "Buildings B - HD 720p, 32 seconds"
+clip_title = "Buildings B - 32 seconds (Freepik)"
+resolution = "720p"
+source = "Freepik (user-provided)"
+path = "assets/videos/buildings_458688_1280x720.mp4"
+combination = 2
+
+[[videos]]
+demo = "high-resolution-video-detection"
+title = "Buildings A - Full HD 1080p, 34 seconds"
+clip_title = "Buildings A - 34 seconds (Freepik)"
+resolution = "1080p"
+source = "Freepik (user-provided)"
+path = "assets/videos/buildings_458687_1920x1080.mp4"
+combination = 14
+
+[[videos]]
+demo = "high-resolution-video-detection"
+title = "Buildings B - Full HD 1080p, 32 seconds"
+clip_title = "Buildings B - 32 seconds (Freepik)"
+resolution = "1080p"
+source = "Freepik (user-provided)"
+path = "assets/videos/buildings_458688_1920x1080.mp4"
+combination = 14
+
+[[videos]]
+demo = "vision-imx93"
+title = "Buildings A - HD 720p, 34 seconds"
+clip_title = "Buildings A - 34 seconds (Freepik)"
+resolution = "720p"
+source = "Freepik (user-provided)"
+path = "assets/videos/buildings_458687_1280x720.avi"
+
+[[videos]]
+demo = "vision-imx93"
+title = "Buildings B - HD 720p, 32 seconds"
+clip_title = "Buildings B - 32 seconds (Freepik)"
+resolution = "720p"
+source = "Freepik (user-provided)"
+path = "assets/videos/buildings_458688_1280x720.avi"
+
+[[videos]]
+demo = "vision-imx93"
+title = "Buildings A - Full HD 1080p, 34 seconds"
+clip_title = "Buildings A - 34 seconds (Freepik)"
+resolution = "1080p"
+source = "Freepik (user-provided)"
+path = "assets/videos/buildings_458687_1920x1080.avi"
+
+[[videos]]
+demo = "vision-imx93"
+title = "Buildings B - Full HD 1080p, 32 seconds"
+clip_title = "Buildings B - 32 seconds (Freepik)"
+resolution = "1080p"
+source = "Freepik (user-provided)"
+path = "assets/videos/buildings_458688_1920x1080.avi"
+
+[[videos]]
+demo = "vision-imx95"
+title = "Buildings A - HD 720p, 34 seconds"
+clip_title = "Buildings A - 34 seconds (Freepik)"
+resolution = "720p"
+source = "Freepik (user-provided)"
+path = "assets/videos/buildings_458687_1280x720.mp4"
+
+[[videos]]
+demo = "vision-imx95"
+title = "Buildings B - HD 720p, 32 seconds"
+clip_title = "Buildings B - 32 seconds (Freepik)"
+resolution = "720p"
+source = "Freepik (user-provided)"
+path = "assets/videos/buildings_458688_1280x720.mp4"
+
+[[videos]]
+demo = "vision-imx95"
+title = "Buildings A - Full HD 1080p, 34 seconds"
+clip_title = "Buildings A - 34 seconds (Freepik)"
+resolution = "1080p"
+source = "Freepik (user-provided)"
+path = "assets/videos/buildings_458687_1920x1080.mp4"
+
+[[videos]]
+demo = "vision-imx95"
+title = "Buildings B - Full HD 1080p, 32 seconds"
+clip_title = "Buildings B - 32 seconds (Freepik)"
+resolution = "1080p"
+source = "Freepik (user-provided)"
+path = "assets/videos/buildings_458688_1920x1080.mp4"

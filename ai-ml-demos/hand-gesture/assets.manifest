@@ -1,0 +1,6 @@
+# SHA256 remote-path installed-path
+3ea444e1f7dc8a0b2c06282f1ac6eb4ebf3e2e7d79dd184b440be1cfb3205897 hand-gesture/v1/palm.tflite model/palm.tflite
+3c8f75a0c67ba33fc9b2d9029e71dd1d37ced52afa4a9bae0c59c96f147fe4db hand-gesture/v1/landmark.tflite model/landmark.tflite
+8daa720cdbc4edaea576fff662440df1969b5836fcbbef569d942d8f0d6c18e9 hand-gesture/v1/anchors.csv model/anchors.csv
+d1ad6e175a83b785b1835159cbf5016c21ad5aa611a1165a8a58cd4e14892446 hand-gesture/v1/hand.bmp media/hand.bmp
+ba878adab3671263d6907d91ec87be6c1abd049cdef30ee896fd11857b4c9a5c https://nyc3.digitaloceanspaces.com/variscite-marketing/demos/branding/v1/variscite-logo-white.png media/variscite-logo-white.png
